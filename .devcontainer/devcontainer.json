@@ -1,0 +1,22 @@
+{
+  "dockerComposeFile": ["../docker-compose.yaml", "docker-compose.yaml"],
+  "service": "workspace",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+      },
+      "extensions": ["humao.rest-client", "vscjava.vscode-java-pack", "esbenp.prettier-vscode", "visualstudioexptteam.vscodeintellicode"]
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "postCreateCommand": {
+    "bmon-workspace-.gradle": "sudo chown vscode .gradle",
+    "bmon-workspace-build": "sudo chown vscode build",
+    "bmon-workspace-bin": "sudo chown vscode bin"
+  }
+}

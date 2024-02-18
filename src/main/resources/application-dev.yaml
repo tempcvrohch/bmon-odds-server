@@ -1,0 +1,26 @@
+# set -o allexport && source .env && set +o allexport
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+        filter:
+          CommonsRequestLoggingFilter: DEBUG
+
+spring: 
+  debug: ${SPRING_DEBUG}
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    platform: postgresql
+    url: ${BMON_POSTGRES_URL}/${BMON_POSTGRES_DB}?currentSchema:${BMON_POSTGRES_SCHEMA}
+    username: ${BMON_POSTGRES_USER}
+    password: ${BMON_POSTGRES_PASS}
+    hikari:
+      schema: ${BMON_POSTGRES_SCHEMA}
+
+  flyway:
+    createSchemas: true
+    defaultSchema: ${FLYWAY_SCHEMA}
+    initSql: CREATE IF NOT EXISTS ${FLYWAY_SCHEMA};
+    schemas: ${FLYWAY_SCHEMA},${BMON_POSTGRES_SCHEMA}

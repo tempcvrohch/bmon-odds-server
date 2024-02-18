@@ -1,0 +1,5 @@
+@BmonOddsServer_HostAdress = http://localhost:8080
+
+GET {{BmonOddsServer_HostAdress}}/leagues
+Content-Type:: application/json
+Accept: application/json

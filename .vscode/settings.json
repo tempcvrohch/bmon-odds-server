@@ -1,0 +1,9 @@
+{
+	"java.compile.nullAnalysis.mode": "automatic",
+	"java.configuration.updateBuildConfiguration": "automatic",
+	"java.debug.settings.hotCodeReplace": "never",
+	"java.jdt.ls.vmargs": "-Djava.security.egd=file:/dev/./urandom -XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m",
+	"workbench.colorCustomizations": {
+    "activityBar.background": "#3b1919",
+  }
+}

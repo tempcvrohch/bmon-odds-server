@@ -1,0 +1,17 @@
+spring: 
+  main: 
+    lazy-initialization: true
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+        default_schema: '"bmon_schema"'
+        dialect: org.hibernate.dialect.PostgresPlusDialect
+        jdbc:
+          time_zone: UTC
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+      # ddl-auto: validate
+    show-sql: true

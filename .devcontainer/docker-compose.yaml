@@ -1,0 +1,35 @@
+version: "3"
+services:
+  workspace:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        VARIANT: "17"
+        INSTALL_GRADLE: true
+        NODE_VERSION: "lts/*"
+    volumes:
+      # Mounts the project folder to '/workspace'. While this file is in .devcontainer,
+      # mounts are relative to the first file in the list, which is a level up.
+      - .:/workspace
+      - "bmon-workspace-gradle:/workspace/.gradle"
+      - "bmon-workspace-build:/workspace/build"
+      - "bmon-workspace-bin:/workspace/bin"
+      - type: tmpfs
+        target: /tmp
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    networks:
+      - main
+
+volumes:
+  "bmon-workspace-gradle":
+  "bmon-workspace-build":
+    driver_opts:
+      type: tmpfs
+  "bmon-workspace-bin":
+    driver_opts:
+      type: tmpfs
