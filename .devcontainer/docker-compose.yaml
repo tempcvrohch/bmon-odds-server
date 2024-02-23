@@ -1,6 +1,8 @@
 version: "3"
 services:
-  workspace:
+  bmon-server:
+    ports:
+      - "8080:8080"
     env_file:
       - .env
     build:
@@ -33,3 +35,8 @@ volumes:
   "bmon-workspace-bin":
     driver_opts:
       type: tmpfs
+
+networks:
+  main:
+    external:
+      name: bmon-odds-server_main

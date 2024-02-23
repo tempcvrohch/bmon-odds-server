@@ -14,8 +14,8 @@ public interface MarketStateRepository extends JpaRepository<MarketState, Long> 
   @Query(
       value =
           "SELECT mts.* FROM matches m "
-              + "JOIN matches_states ms ON m.id = ms.match_id "
-              + "JOIN market_states mts ON ms.id = mts.match_state_id "
+              + "JOIN match_states ms ON m.id = ms.matches_id "
+              + "JOIN market_states mts ON ms.id = mts.match_states_id "
               + "WHERE m.id = :matchId ORDER BY mts.id DESC LIMIT :limit",
       nativeQuery = true)
   List<MarketState> findLatestByMatchIdOrderByIdDescLimit(

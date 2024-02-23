@@ -1,8 +1,9 @@
 /* (C)2024 */
 package com.rohanc.bmonoddsserver.services;
 
+import com.rohanc.bmonoddsserver.models.db.MarketState;
+import com.rohanc.bmonoddsserver.models.db.MatchState;
 import com.rohanc.bmonoddsserver.models.db.Player;
-import com.rohanc.bmonoddsserver.models.dto.MarketStateDto;
 import com.rohanc.bmonoddsserver.models.dto.MatchDto;
 import com.rohanc.bmonoddsserver.models.dto.MatchStateDto;
 import com.rohanc.bmonoddsserver.models.dto.MatchUpsertDto;
@@ -16,9 +17,9 @@ import com.rohanc.bmonoddsserver.repositories.MarketStateRepository;
 import com.rohanc.bmonoddsserver.repositories.MatchRepository;
 import com.rohanc.bmonoddsserver.repositories.MatchStateRepository;
 import com.rohanc.bmonoddsserver.repositories.PlayerRepository;
+import com.rohanc.bmonoddsserver.services.aggregate.MatchChildrenAggregate;
 import com.rohanc.bmonoddsserver.services.util.MarketCalculator;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,19 +49,6 @@ public class LiveMatchesService {
 
   @Autowired private MatchUpsertDtoMatchStateMapper matchUpsertDtoMatchStateMapper;
 
-  // TODO: potential threading issues
-  private Map<Long, MatchDto> persistedMatchEntities =
-      new ConcurrentHashMap<>(); // contains matches of last
-  // 24H
-  private Map<Long, MatchDto> liveMatchEntities =
-      new ConcurrentHashMap<>(); // contains matches of the
-
-  // current updateMatches tick
-
-  public Map<Long, MatchDto> getLiveMatchEntities() {
-    return liveMatchEntities;
-  }
-
   public MatchDto createMatch(MatchUpsertDto matchUpsertDto) {
     MatchChildrenAggregate matchChildrenAggregate = createMatchChildrenAggregate(matchUpsertDto);
     return persistNewMatch(matchChildrenAggregate);
@@ -77,7 +65,8 @@ public class LiveMatchesService {
       players.add(foundPlayer);
     }
 
-    var market = marketRepository.findById(0L).orElseThrow(MissingMarketException::new);
+    // TODO: fix this hardcoded id
+    var market = marketRepository.findById(1L).orElseThrow(MissingMarketException::new);
     var marketStates =
         MarketCalculator.CalculateMarketStatesForMatch(match, matchState, market, players);
 
@@ -86,17 +75,13 @@ public class LiveMatchesService {
 
   public void updateMatchAndStates(MatchUpsertDto matchUpsertDto) {
     var matchDto = matchUpsertMapper.toDto(matchUpsertDto);
-    if (matchDto.getLive()) {
-      updateMatchNestedElements(persistedMatchEntities.get(matchDto.getId()), matchDto);
-    } else {
-      processFinishedMatch(matchDto);
-    }
-  }
+    MatchChildrenAggregate matchChildrenAggregate = createMatchChildrenAggregate(matchUpsertDto);
+    updateMatchNestedElements(matchDto, matchChildrenAggregate);
 
-  private void processFinishedMatch(MatchDto matchDto) {
-    persistedMatchEntities.remove(matchDto.getId());
-    var match = matchMapper.fromDto(matchDto);
-    betResultService.processUserBetsOnMatch(match);
+    if (!matchDto.getLive()) {
+      matchRepository.setLiveStatus(matchUpsertDto.getId(), false);
+      betResultService.processUserBetsOnMatch(matchChildrenAggregate.getMatch());
+    }
   }
 
   /**
@@ -109,27 +94,39 @@ public class LiveMatchesService {
    */
   private MatchDto persistNewMatch(MatchChildrenAggregate matchChildrenAggregate) {
     var insertedMatch = matchRepository.save(matchChildrenAggregate.match);
-    matchChildrenAggregate.matchState.setMatch(insertedMatch);
 
+    // Set parent
+    matchChildrenAggregate.matchState.setMatch(insertedMatch);
     var insertedMatchState = matchStateRepository.save(matchChildrenAggregate.matchState);
+
+    // Set parents
     matchChildrenAggregate.marketStates.forEach(
         marketState -> marketState.setMatchState(insertedMatchState));
 
-    marketStateRepository.saveAll(matchChildrenAggregate.marketStates);
+    var marketStates = marketStateRepository.saveAll(matchChildrenAggregate.marketStates);
 
     var matchDto = matchMapper.toDto(matchChildrenAggregate.match);
-    return persistedMatchEntities.put(insertedMatch.getId(), matchDto);
+    var matchStateDto = matchStateMapper.toDto(insertedMatchState);
+    var marketStateDtos = marketStateMapper.toDtoList(marketStates);
+
+    matchStateDto.addMarketStatesItem(marketStateDtos.get(0));
+    matchStateDto.addMarketStatesItem(marketStateDtos.get(1));
+    matchDto.setMatchState(matchStateDto);
+    matchDto.setLive(true);
+
+    return matchDto;
   }
 
-  private boolean hasMatchStateChanged(MatchStateDto matchStateA, MatchStateDto matchStateB) {
-    return matchStateA.getPointScore() != matchStateA.getPointScore()
-        || matchStateA.getSetScore() != matchStateA.getSetScore()
-        || matchStateA.getServingIndex() != matchStateA.getServingIndex();
+  private boolean hasMatchStateChanged(
+      MatchState persistedMatchState, MatchStateDto updatedMatchState) {
+    return persistedMatchState.getPointScore() != updatedMatchState.getPointScore()
+        || persistedMatchState.getSetScore() != updatedMatchState.getSetScore()
+        || persistedMatchState.getServingIndex() != updatedMatchState.getServingIndex();
   }
 
-  private boolean hasMarketStateChanged(MarketStateDto marketStateA, MarketStateDto marketStateB) {
-    return marketStateA.getOdd() != marketStateB.getOdd()
-        || marketStateA.getSuspended() != marketStateB.getSuspended();
+  private boolean hasMarketStateChanged(MarketState marketState, MarketState marketState2) {
+    return Math.abs(marketState.getOdd() - marketState2.getOdd()) > 0.01
+        || marketState.isSuspended() != marketState2.isSuspended();
   }
 
   /**
@@ -146,41 +143,54 @@ public class LiveMatchesService {
    * Ajax" and
    * updatedMatch.name = "PSV vs Ajax").
    *
-   * @param persistedMatch current persisted match
-   * @param updatedMatch   the updated match
+   * @param persistedMatch         current persisted match
+   * @param updatedMatch           the updated match
+   * @param matchChildrenAggregate
    */
-  private void updateMatchNestedElements(MatchDto persistedMatch, MatchDto updatedMatch) {
-    boolean hasChanged = false;
+  private void updateMatchNestedElements(
+      MatchDto updatedMatch, MatchChildrenAggregate matchChildrenAggregate) {
+    var persistedMatch =
+        matchRepository.findById(updatedMatch.getId()).orElseThrow(MissingMatchException::new);
+    var persistedMatchState =
+        matchStateRepository
+            .findLatestByMatchId(updatedMatch.getId())
+            .orElseThrow(MissingMatchStateException::new);
+
     // Check for a point/set/serve index or score difference
-    if (hasMatchStateChanged(persistedMatch.getMatchState(), updatedMatch.getMatchState())) {
+    if (hasMatchStateChanged(persistedMatchState, updatedMatch.getMatchState())) {
+
       var updatedMatchState = matchStateMapper.fromDto(updatedMatch.getMatchState());
-      updatedMatchState.getMatch().setId(persistedMatch.getId());
+      // Set parent
+      updatedMatchState.setMatch(persistedMatch);
 
-      hasChanged = true;
-    }
+      var newMatchState = matchStateRepository.save(updatedMatchState);
 
-    if (persistedMatch.getMatchState().getMarketStates() == null
-        || hasMarketStateChanged(
-            persistedMatch.getMatchState().getMarketStates().get(0),
-            updatedMatch.getMatchState().getMarketStates().get(0))) {
+      var persistedMarketStates =
+          marketStateRepository.findLatestByMatchIdOrderByIdDescLimit(
+              updatedMatch.getId(), matchChildrenAggregate.getMarketStates().size());
 
-      // TODO: technically it could be possible additional markets to be added later
-      for (var i = 0; i < updatedMatch.getMatchState().getMarketStates().size(); i++) {
-        var upMarketStateDto = updatedMatch.getMatchState().getMarketStates().get(i);
-        var marketState = marketStateMapper.fromDto(upMarketStateDto);
-        marketState.getMatchState().setId(persistedMatch.getMatchState().getId());
+      // If the match state has changed, the marketstates should also have been
+      // changed.
+      if (hasMarketStateChanged(
+          persistedMarketStates.get(0), matchChildrenAggregate.getMarketStates().get(0))) {
 
-        marketStateRepository.save(marketState);
+        for (var i = 0; i < matchChildrenAggregate.getMarketStates().size(); i++) {
+          var upMarketState = matchChildrenAggregate.getMarketStates().get(i);
+
+          // Set parents
+          upMarketState.setMatchState(newMatchState);
+          upMarketState.setMarket(persistedMarketStates.get(i).getMarket());
+          upMarketState.setPlayer(persistedMarketStates.get(i).getPlayer());
+
+          marketStateRepository.save(upMarketState);
+        }
       }
-
-      hasChanged = true;
-    }
-
-    if (hasChanged) {
-      updatedMatch.setId(persistedMatch.getId());
-      persistedMatchEntities.put(updatedMatch.getId(), updatedMatch);
     }
   }
+
+  public class MissingMatchException extends RuntimeException {}
+
+  public class MissingMatchStateException extends RuntimeException {}
 
   public class MissingMarketException extends RuntimeException {}
 

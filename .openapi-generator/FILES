@@ -19,6 +19,7 @@ src/main/java/com/rohanc/bmonoddsserver/models/dto/MatchStateDto.java
 src/main/java/com/rohanc/bmonoddsserver/models/dto/MatchUpsertDto.java
 src/main/java/com/rohanc/bmonoddsserver/models/dto/MatchUpsertDtoMatchState.java
 src/main/java/com/rohanc/bmonoddsserver/models/dto/PlayerDto.java
+src/main/java/com/rohanc/bmonoddsserver/models/dto/PlayerDto.java
 src/main/java/com/rohanc/bmonoddsserver/models/dto/SportDto.java
 src/main/java/com/rohanc/bmonoddsserver/models/dto/SportDto.java
 src/main/java/com/rohanc/bmonoddsserver/models/dto/UserDto.java

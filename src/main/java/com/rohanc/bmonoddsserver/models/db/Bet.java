@@ -10,36 +10,36 @@ import lombok.RequiredArgsConstructor;
 
 @Entity
 @Data
-@Table(name = "bets", schema = "bmon_schema")
+@Table(name = "bets")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class Bet extends BaseEntity {
-	@NonNull
-	@Column(nullable = false)
-	@Enumerated(EnumType.STRING)
-	private BetStatus status;
+  @NonNull
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private BetStatus status;
 
-	@NonNull
-	@Column(nullable = false)
-	private Float stake;
+  @NonNull
+  @Column(nullable = false)
+  private Float stake;
 
-	@NonNull
-	@Column(nullable = false)
-	private Float toReturn;
+  @NonNull
+  @Column(nullable = false)
+  private Float toReturn;
 
-	@ManyToOne()
-	@JoinColumn(name = "market_states_id")
-	private MarketState marketState;
+  @ManyToOne()
+  @JoinColumn(name = "market_states_id")
+  private MarketState marketState;
 
-	@ManyToOne()
-	@JoinColumn(name = "users_id")
-	private User user;
+  @ManyToOne()
+  @JoinColumn(name = "users_id")
+  private User user;
 
-	public enum BetStatus {
-		WIN,
-		LOSS,
-		PENDING,
-		VOID
-	}
+  public enum BetStatus {
+    WIN,
+    LOSS,
+    PENDING,
+    VOID
+  }
 }

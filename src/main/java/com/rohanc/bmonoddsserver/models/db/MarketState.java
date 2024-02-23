@@ -13,27 +13,27 @@ import lombok.RequiredArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Table(name = "market_states", schema = "bmon_schema")
+@Table(name = "market_states")
 public class MarketState extends BaseEntity {
-  @Column(nullable = false)
-  private boolean suspended;
+	@Column(nullable = false)
+	private boolean suspended;
 
-  @NonNull
-  @Column(nullable = false)
-  private Float odd;
+	@NonNull
+	@Column(nullable = false)
+	private Float odd;
 
-  @Column(nullable = false)
-  private float stakeLimit;
+	@Column(nullable = false)
+	private Float stakeLimit;
 
-  @ManyToOne()
-  @JoinColumn(name = "markets_id")
-  private Market market;
+	@ManyToOne()
+	@JoinColumn(name = "markets_id")
+	private Market market;
 
-  @ManyToOne()
-  @JoinColumn(name = "players_id")
-  private Player player;
+	@ManyToOne()
+	@JoinColumn(name = "players_id")
+	private Player player;
 
-  @ManyToOne()
-  @JoinColumn(name = "match_states_id")
-  private MatchState matchState;
+	@ManyToOne()
+	@JoinColumn(name = "match_states_id")
+	private MatchState matchState;
 }

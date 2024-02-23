@@ -1,18 +1,10 @@
+logging:
+  level:
+    org:
+      #flywaydb: debug
+
 spring:
+  debug: true
   flyway:
-    createSchemas: true
-    defaultSchema: ${FLYWAY_SCHEMA}
-    initSql: CREATE IF NOT EXISTS ${FLYWAY_SCHEMA};
-    schemas: ${FLYWAY_SCHEMA},${BMON_POSTGRES_SCHEMA}
-    locations: filesystem:./**/test/resources/migration
-    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DATABASE_TO_UPPER=false;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS ${BMON_POSTGRES_SCHEMA};
-  datasource:
-    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DATABASE_TO_UPPER=false;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS ${BMON_POSTGRES_SCHEMA};
-    username: sa
-    password:
-  jpa:
-    defer-datasource-initialization: false
-    properties:
-      hibernate:
-        default_schema: '"bmon_schema"'
-        dialect: org.hibernate.dialect.PostgresPlusDialect
+    cleanDisabled: false
+    locations: filesystem:./src/test/resources/db/migration,filesystem:./src/main/resources/db/migration

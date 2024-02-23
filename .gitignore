@@ -4,6 +4,7 @@
 /bin/**
 .env 
 .env.test
+/nginx/certs/*
 
 ### STS ###
 .apt_generated

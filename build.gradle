@@ -78,11 +78,11 @@ tasks.named('test') {
 }
 
 flyway {
-	url =  System.getenv('BMON_POSTGRES_URL') + "/" + System.getenv('BMON_POSTGRES_DB')
-	user = System.getenv('BMON_POSTGRES_USER')
-	password = System.getenv('BMON_POSTGRES_PASS')
+	url =  System.getenv('POSTGRES_URL') + "/" + System.getenv('POSTGRES_DB')
+	user = System.getenv('POSTGRES_USER')
+	password = System.getenv('POSTGRES_PASS')
 	defaultSchema = System.getenv('FLYWAY_SCHEMA')
-	schemas = [System.getenv('FLYWAY_SCHEMA'), System.getenv('BMON_POSTGRES_SCHEMA')]
+	schemas = [System.getenv('FLYWAY_SCHEMA'), System.getenv('POSTGRES_SCHEMA')]
 }
 
 spotless {
@@ -100,3 +100,4 @@ spotless {
 		licenseHeader '/* (C)$YEAR */'
 	}
 }
+//////////////////////////////////////////

@@ -2,12 +2,14 @@
 package com.rohanc.bmonoddsserver.services;
 
 import com.rohanc.bmonoddsserver.models.db.Bet;
+import com.rohanc.bmonoddsserver.models.db.Bet.BetStatus;
 import com.rohanc.bmonoddsserver.models.db.MarketState;
 import com.rohanc.bmonoddsserver.models.db.Match;
 import com.rohanc.bmonoddsserver.models.db.MatchState;
 import com.rohanc.bmonoddsserver.repositories.BetRepository;
 import com.rohanc.bmonoddsserver.repositories.MarketStateRepository;
 import com.rohanc.bmonoddsserver.repositories.MatchStateRepository;
+import com.rohanc.bmonoddsserver.repositories.UserRepository;
 import com.rohanc.bmonoddsserver.services.util.ScoreParser;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,8 @@ import org.springframework.stereotype.Service;
 public class BetResultService {
   @Autowired private MarketStateRepository marketStateRepository;
   @Autowired private MatchStateRepository matchStateRepository;
-
+  @Autowired private UserRepository userRepository;
   @Autowired private BetRepository betRepository;
-
-  @Autowired private BetService betService;
 
   void processUserBetsOnMatch(Match match) {
     var pendingBets = betRepository.findByMatchId(match.getId());
@@ -28,7 +28,7 @@ public class BetResultService {
       return;
     }
 
-    var latestMatchState = matchStateRepository.findLatestByMatchId(match.getId());
+    var latestMatchState = matchStateRepository.findLatestByMatchId(match.getId()).orElseThrow();
     var latestMarketStates =
         marketStateRepository.findLatestByMatchIdOrderByIdDescLimit(match.getId(), 2);
     var sideScoresArray = ScoreParser.ExtractLastSetPlayerScores(latestMatchState.getSetScore());
@@ -43,9 +43,9 @@ public class BetResultService {
   private void processFinishedMatchBet(
       MatchState matchState, List<MarketState> marketStates, Bet bet, int winnerIndex) {
     if (winnerIndex == -1) {
-      betService.processVoidBet(bet);
+      processVoidBet(bet);
     } else {
-      betService.processFinishedBet(bet, didPlayerWinBet(bet, marketStates, winnerIndex));
+      processFinishedBet(bet, didPlayerWinBet(bet, marketStates, winnerIndex));
     }
   }
 
@@ -54,5 +54,20 @@ public class BetResultService {
         .getPlayer()
         .getId()
         .equals(marketStates.get(winnerIndex).getPlayer().getId());
+  }
+
+  void processFinishedBet(Bet bet, boolean wonBet) {
+    BetStatus status = BetStatus.LOSS;
+    if (wonBet) {
+      status = BetStatus.WIN;
+      userRepository.incrementBalanceByUsername(bet.getUser().getId(), bet.getToReturn());
+    }
+
+    betRepository.updateOnBetStatusById(bet.getUser().getId(), status.name());
+  }
+
+  void processVoidBet(Bet bet) {
+    userRepository.incrementBalanceByUsername(bet.getUser().getId(), bet.getStake());
+    betRepository.updateOnBetStatusById(bet.getUser().getId(), Bet.BetStatus.VOID.name());
   }
 }

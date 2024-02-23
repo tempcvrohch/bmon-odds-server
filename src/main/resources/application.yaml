@@ -1,17 +1,29 @@
-spring: 
-  main: 
-    lazy-initialization: true
+#  server.servlet.session.cookie.secure: true
+#  server.session.cookie.secure: true
+
+spring:
+  main.lazy-initialization: true
+ 
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    platform: postgresql
+    url: ${POSTGRES_URL}/${POSTGRES_DB}?currentSchema:${POSTGRES_SCHEMA}&stringtype=unspecified
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASS}
+    hikari:
+      schema: ${POSTGRES_SCHEMA}
+  flyway:
+    schemas: ${FLYWAY_SCHEMA},${POSTGRES_SCHEMA}
+    placeholders:
+      POSTGRES_SCHEMA: ${POSTGRES_SCHEMA}
+      FLYWAY_SCHEMA: ${FLYWAY_SCHEMA}
   jpa:
+    open-in-view: false
     properties:
       hibernate:
-        temp:
-          use_jdbc_metadata_defaults: false
-        default_schema: '"bmon_schema"'
-        dialect: org.hibernate.dialect.PostgresPlusDialect
         jdbc:
           time_zone: UTC
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
-      # ddl-auto: validate
-    show-sql: true
+    dialect: org.hibernate.dialect.PostgresPlusDialect

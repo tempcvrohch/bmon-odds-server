@@ -11,51 +11,56 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserCoreService implements UserDetailsService {
-  @Autowired private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-  @Autowired private UserMapper userMapper;
+	@Autowired
+	private UserMapper userMapper;
 
-  private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-  @Override
-  public UserDetails loadUserByUsername(String username) {
-    User user = userRepository.findByUsername(username);
-    if (user == null) {
-      throw new UsernameNotFoundException(username);
-    }
-    return new UserPrincipal(user);
-  }
+	@Override
+	public UserDetails loadUserByUsername(String username) {
+		User user = userRepository.findByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException(username);
+		}
+		return new UserPrincipal(user);
+	}
 
-  public UserDto register(String username, String password) {
-    if (isInvalidInput(username)) { // TODO: move to service
-      throw new InvalidSyntaxCredentials("invalid username");
-    } else if (isInvalidInput(password)) {
-      throw new InvalidSyntaxCredentials("invalid password");
-    }
+	public UserDto register(String username, String password) {
+		if (isInvalidInput(username)) { // TODO: move to service
+			throw new InvalidSyntaxCredentials("invalid username");
+		} else if (isInvalidInput(password)) {
+			throw new InvalidSyntaxCredentials("invalid password");
+		}
 
-    User existingUser = userRepository.findByUsername(username);
-    if (existingUser != null) {
-      throw new UsernameTakenException();
-    }
+		User existingUser = userRepository.findByUsername(username);
+		if (existingUser != null) {
+			throw new UsernameTakenException();
+		}
 
-    User newUser = new User(username, encoder.encode(password), 1000f);
-    var persistedUser = userRepository.save(newUser);
-    return userMapper.toDto(persistedUser);
-  }
+		User newUser = new User(username, passwordEncoder.encode(password), 1000F);
+		var persistedUser = userRepository.save(newUser);
+		return userMapper.toDto(persistedUser);
+	}
 
-  private boolean isInvalidInput(String input) {
-    return input.length() < 5 || input.length() > 15 || !input.matches("[A-Za-z0-9_]+");
-  }
+	private boolean isInvalidInput(String input) {
+		return input.length() < 5 || input.length() > 15 || !input.matches("[A-Za-z0-9_]+");
+	}
 
-  class InvalidSyntaxCredentials extends RuntimeException {
-    InvalidSyntaxCredentials(String s) {
-      super(s);
-    }
-  }
+	class InvalidSyntaxCredentials extends RuntimeException {
+		InvalidSyntaxCredentials(String s) {
+			super(s);
+		}
+	}
 
-  public class UsernameTakenException extends RuntimeException {}
+	public class UsernameTakenException extends RuntimeException {
+	}
 }

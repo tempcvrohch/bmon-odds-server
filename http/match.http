@@ -1,5 +1,5 @@
 @BmonOddsServer_HostAdress = http://localhost:8080
+@matchId = 10
 
-GET {{BmonOddsServer_HostAdress}}/sports
-Content-Type:: application/json
+GET {{BmonOddsServer_HostAdress}}/match/{{matchId}}/markets/latest
 Accept: application/json

@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Table(name = "matches_states", schema = "bmon_schema")
+@Table(name = "match_states")
 public class MatchState extends BaseEntity {
   @NonNull
   @Column(nullable = false)
@@ -25,7 +25,7 @@ public class MatchState extends BaseEntity {
 
   @NonNull
   @Column(nullable = false)
-  private String servingIndex;
+  private Integer servingIndex;
 
   @ManyToOne()
   @JoinColumn(name = "matches_id")

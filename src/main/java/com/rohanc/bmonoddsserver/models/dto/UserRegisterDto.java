@@ -1,23 +1,28 @@
-/* (C)2024 */
 package com.rohanc.bmonoddsserver.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.annotation.Generated;
-import jakarta.validation.constraints.*;
-import java.io.Serializable;
-import java.util.*;
+import java.net.URI;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.io.Serializable;
+import java.time.OffsetDateTime;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import jakarta.annotation.Generated;
 
 /**
  * A request body for a user registration
  */
+
 @Schema(name = "user-register-dto", description = "A request body for a user registration")
 @JsonTypeName("user-register-dto")
-@Generated(
-    value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-02-18T11:33:56.064195726Z[Etc/UTC]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
 public class UserRegisterDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -34,8 +39,8 @@ public class UserRegisterDto implements Serializable {
   /**
    * Get username
    * @return username
-   */
-  @Size(min = 6, max = 32)
+  */
+  @Size(min = 6, max = 32) 
   @Schema(name = "username", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("username")
   public String getUsername() {
@@ -54,8 +59,8 @@ public class UserRegisterDto implements Serializable {
   /**
    * Get password
    * @return password
-   */
-  @Size(min = 6, max = 32)
+  */
+  @Size(min = 6, max = 32) 
   @Schema(name = "password", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("password")
   public String getPassword() {
@@ -75,8 +80,8 @@ public class UserRegisterDto implements Serializable {
       return false;
     }
     UserRegisterDto userRegisterDto = (UserRegisterDto) o;
-    return Objects.equals(this.username, userRegisterDto.username)
-        && Objects.equals(this.password, userRegisterDto.password);
+    return Objects.equals(this.username, userRegisterDto.username) &&
+        Objects.equals(this.password, userRegisterDto.password);
   }
 
   @Override
@@ -105,3 +110,4 @@ public class UserRegisterDto implements Serializable {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

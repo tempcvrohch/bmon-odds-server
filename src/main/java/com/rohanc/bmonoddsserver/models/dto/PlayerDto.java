@@ -1,25 +1,29 @@
-/* (C)2024 */
 package com.rohanc.bmonoddsserver.models.dto;
 
+import java.net.URI;
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.annotation.Generated;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
+import java.time.OffsetDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.openapitools.jackson.nullable.JsonNullable;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
 import java.util.*;
-import java.util.Objects;
-import org.springframework.format.annotation.DateTimeFormat;
+import jakarta.annotation.Generated;
 
 /**
  * PlayerDto
  */
+
 @JsonTypeName("player-dto")
-@Generated(
-    value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-02-18T11:33:56.064195726Z[Etc/UTC]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
 public class PlayerDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -62,8 +66,8 @@ public class PlayerDto implements Serializable {
   /**
    * Get id
    * @return id
-   */
-  @NotNull
+  */
+  @NotNull 
   @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public Long getId() {
@@ -82,8 +86,8 @@ public class PlayerDto implements Serializable {
   /**
    * Get createdAt
    * @return createdAt
-   */
-  @Valid
+  */
+  @Valid 
   @Schema(name = "created_at", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("created_at")
   public OffsetDateTime getCreatedAt() {
@@ -102,8 +106,8 @@ public class PlayerDto implements Serializable {
   /**
    * Get updatedAt
    * @return updatedAt
-   */
-  @Valid
+  */
+  @Valid 
   @Schema(name = "updated_at", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("updated_at")
   public OffsetDateTime getUpdatedAt() {
@@ -122,8 +126,8 @@ public class PlayerDto implements Serializable {
   /**
    * Get firstname
    * @return firstname
-   */
-  @NotNull
+  */
+  @NotNull 
   @Schema(name = "firstname", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("firstname")
   public String getFirstname() {
@@ -142,8 +146,8 @@ public class PlayerDto implements Serializable {
   /**
    * Get lastname
    * @return lastname
-   */
-  @NotNull
+  */
+  @NotNull 
   @Schema(name = "lastname", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("lastname")
   public String getLastname() {
@@ -162,7 +166,8 @@ public class PlayerDto implements Serializable {
   /**
    * Get slug
    * @return slug
-   */
+  */
+  
   @Schema(name = "slug", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("slug")
   public String getSlug() {
@@ -181,8 +186,8 @@ public class PlayerDto implements Serializable {
   /**
    * Get countryCode
    * @return countryCode
-   */
-  @NotNull
+  */
+  @NotNull 
   @Schema(name = "countryCode", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("countryCode")
   public String getCountryCode() {
@@ -202,13 +207,13 @@ public class PlayerDto implements Serializable {
       return false;
     }
     PlayerDto playerDto = (PlayerDto) o;
-    return Objects.equals(this.id, playerDto.id)
-        && Objects.equals(this.createdAt, playerDto.createdAt)
-        && Objects.equals(this.updatedAt, playerDto.updatedAt)
-        && Objects.equals(this.firstname, playerDto.firstname)
-        && Objects.equals(this.lastname, playerDto.lastname)
-        && Objects.equals(this.slug, playerDto.slug)
-        && Objects.equals(this.countryCode, playerDto.countryCode);
+    return Objects.equals(this.id, playerDto.id) &&
+        Objects.equals(this.createdAt, playerDto.createdAt) &&
+        Objects.equals(this.updatedAt, playerDto.updatedAt) &&
+        Objects.equals(this.firstname, playerDto.firstname) &&
+        Objects.equals(this.lastname, playerDto.lastname) &&
+        Objects.equals(this.slug, playerDto.slug) &&
+        Objects.equals(this.countryCode, playerDto.countryCode);
   }
 
   @Override
@@ -242,3 +247,4 @@ public class PlayerDto implements Serializable {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

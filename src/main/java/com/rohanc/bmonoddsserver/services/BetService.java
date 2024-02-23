@@ -24,7 +24,7 @@ public class BetService {
   @Autowired private BetMapper betMapper;
 
   @Transactional
-  public BetDto addBet(User user, float stake, long marketStateId) {
+  public BetDto addBet(User user, Float stake, long marketStateId) {
     if (user.getBalance() < stake) {
       throw new InsufficientBalanceException();
     }
@@ -52,21 +52,6 @@ public class BetService {
     var placedBet = betRepository.save(bet);
     userRepository.reduceBalanceByUsername(user.getId(), stake);
     return betMapper.toDto(placedBet);
-  }
-
-  void processFinishedBet(Bet bet, boolean wonBet) {
-    BetStatus status = BetStatus.LOSS;
-    if (wonBet) {
-      status = BetStatus.WIN;
-      userRepository.incrementBalanceByUsername(bet.getUser().getId(), bet.getToReturn());
-    }
-
-    betRepository.updateOnBetStatusById(bet.getUser().getId(), status); // .name()
-  }
-
-  void processVoidBet(Bet bet) {
-    userRepository.incrementBalanceByUsername(bet.getUser().getId(), bet.getStake());
-    betRepository.updateOnBetStatusById(bet.getUser().getId(), Bet.BetStatus.VOID); // .name()
   }
 
   // TODO: perhaps create a AddBetException, all of these cause a 400 anyway

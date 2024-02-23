@@ -1,5 +1,5 @@
 /* (C)2024 */
-package com.rohanc.bmonoddsserver.services;
+package com.rohanc.bmonoddsserver.services.aggregate;
 
 import com.rohanc.bmonoddsserver.models.db.Market;
 import com.rohanc.bmonoddsserver.models.db.MarketState;
@@ -15,13 +15,13 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class MatchChildrenAggregate {
-  @NonNull Match match;
+  @NonNull public Match match;
 
-  @NonNull Market market;
+  @NonNull public Market market;
 
-  @NonNull List<MarketState> marketStates;
+  @NonNull public List<MarketState> marketStates;
 
-  @NonNull MatchState matchState;
+  @NonNull public MatchState matchState;
 
-  @NonNull ArrayList<Player> players;
+  @NonNull public ArrayList<Player> players;
 }

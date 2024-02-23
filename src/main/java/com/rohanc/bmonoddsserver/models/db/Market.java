@@ -12,12 +12,12 @@ import lombok.RequiredArgsConstructor;
 
 @Entity
 @Data
-@Table(name = "markets", schema = "bmon_schema")
+@Table(name = "markets")
 @RequiredArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class Market extends BaseEntity {
-  @NonNull
-  @Column(nullable = false)
-  private String name;
+	@NonNull
+	@Column(nullable = false)
+	private String name;
 }

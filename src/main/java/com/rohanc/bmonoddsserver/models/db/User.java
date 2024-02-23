@@ -10,13 +10,13 @@ import lombok.RequiredArgsConstructor;
 
 @Entity
 @Data
-@Table(name = "users", schema = "bmon_schema")
+@Table(name = "users")
 @RequiredArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class User extends BaseEntity {
   @NonNull
-  @Column(name = "user_name", nullable = false, unique = true)
+  @Column(name = "username", nullable = false, unique = true)
   private String username;
 
   @NonNull

@@ -1,30 +1,33 @@
-/* (C)2024 */
 package com.rohanc.bmonoddsserver.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.annotation.Generated;
-import jakarta.validation.constraints.*;
-import java.io.Serializable;
-import java.util.*;
+import java.net.URI;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.io.Serializable;
+import java.time.OffsetDateTime;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import jakarta.annotation.Generated;
 
 /**
  * A request body of a wager placed by a user on a marketState.
  */
-@Schema(
-    name = "bet-place-dto",
-    description = "A request body of a wager placed by a user on a marketState.")
+
+@Schema(name = "bet-place-dto", description = "A request body of a wager placed by a user on a marketState.")
 @JsonTypeName("bet-place-dto")
-@Generated(
-    value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-02-18T11:33:56.064195726Z[Etc/UTC]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
 public class BetPlaceDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private Integer stake;
+  private Float stake;
 
   private Long marketStateId;
 
@@ -35,12 +38,12 @@ public class BetPlaceDto implements Serializable {
   /**
    * Constructor with only required parameters
    */
-  public BetPlaceDto(Integer stake, Long marketStateId) {
+  public BetPlaceDto(Float stake, Long marketStateId) {
     this.stake = stake;
     this.marketStateId = marketStateId;
   }
 
-  public BetPlaceDto stake(Integer stake) {
+  public BetPlaceDto stake(Float stake) {
     this.stake = stake;
     return this;
   }
@@ -49,16 +52,15 @@ public class BetPlaceDto implements Serializable {
    * Get stake
    * minimum: 0
    * @return stake
-   */
-  @NotNull
-  @Min(0)
+  */
+  @NotNull @DecimalMin("0") 
   @Schema(name = "stake", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("stake")
-  public Integer getStake() {
+  public Float getStake() {
     return stake;
   }
 
-  public void setStake(Integer stake) {
+  public void setStake(Float stake) {
     this.stake = stake;
   }
 
@@ -70,8 +72,8 @@ public class BetPlaceDto implements Serializable {
   /**
    * Get marketStateId
    * @return marketStateId
-   */
-  @NotNull
+  */
+  @NotNull 
   @Schema(name = "marketStateId", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("marketStateId")
   public Long getMarketStateId() {
@@ -91,8 +93,8 @@ public class BetPlaceDto implements Serializable {
       return false;
     }
     BetPlaceDto betPlaceDto = (BetPlaceDto) o;
-    return Objects.equals(this.stake, betPlaceDto.stake)
-        && Objects.equals(this.marketStateId, betPlaceDto.marketStateId);
+    return Objects.equals(this.stake, betPlaceDto.stake) &&
+        Objects.equals(this.marketStateId, betPlaceDto.marketStateId);
   }
 
   @Override
@@ -121,3 +123,4 @@ public class BetPlaceDto implements Serializable {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

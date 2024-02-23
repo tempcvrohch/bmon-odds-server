@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 
 @ControllerAdvice
 public class BasicControllerAdvice {
@@ -36,8 +37,9 @@ public class BasicControllerAdvice {
     Inject.JSFileNotFoundException.class,
     BetService.InvalidFractionalOddException.class
   })
-  public void handleServerError(Exception exception) {
-    logger.error(exception.getLocalizedMessage());
+  public void handleServerError(Exception exception, ContentCachingRequestWrapper request) {
+    logger.error("aaaa!!");
+    logger.debug(new String(request.getContentAsByteArray()));
   }
 
   @ResponseStatus(HttpStatus.UNAUTHORIZED)

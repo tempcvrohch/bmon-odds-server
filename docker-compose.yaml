@@ -1,31 +1,52 @@
-version: '3'
+version: "3"
 
 services:
   postgres:
     build:
       context: ./db
-      dockerfile: Dockerfile 
+      dockerfile: Dockerfile
     container_name: postgres
     restart: always
     env_file:
-      - .env
+      - .env # TODO: each service should have its own
     environment:
       POSTGRES_PASSWORD: ${SU_POSTGRES_PASS}
       PG_DATA: /data/postgres
     volumes:
       - db:/data/postgres
     ports:
-      - ${BMON_POSTGRES_PORT}:${BMON_POSTGRES_PORT}
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     networks:
       - main
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -d ${BMON_POSTGRES_DB} -U postgres" ]
+      test: ["CMD-SHELL", "pg_isready -d ${POSTGRES_DB} -U postgres"]
       interval: 30s
       timeout: 10s
       retries: 5
 
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    restart: always
+    env_file:
+      - .env 
+    ports:
+      - "443:443"
+    networks:
+      - main
+      - proxy
+    volumes:
+      - /etc/nginx/conf.d
+      - /etc/localtime:/etc/localtime:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-check-certificate -O /dev/null https://localhost:443/sports || exit 1"]
+      timeout: 10s
+
 networks:
   main:
+  proxy:
 
 volumes:
   db:

@@ -1,25 +1,28 @@
-/* (C)2024 */
 package com.rohanc.bmonoddsserver.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.annotation.Generated;
-import jakarta.validation.constraints.*;
-import java.io.Serializable;
-import java.util.*;
+import java.net.URI;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.io.Serializable;
+import java.time.OffsetDateTime;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import jakarta.annotation.Generated;
 
 /**
  * A change during a match, most likely in points.
  */
-@Schema(
-    name = "match_upsert_dto_matchState",
-    description = "A change during a match, most likely in points.")
+
+@Schema(name = "match_upsert_dto_matchState", description = "A change during a match, most likely in points.")
 @JsonTypeName("match_upsert_dto_matchState")
-@Generated(
-    value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-02-18T11:33:56.064195726Z[Etc/UTC]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
 public class MatchUpsertDtoMatchState implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -38,7 +41,8 @@ public class MatchUpsertDtoMatchState implements Serializable {
   /**
    * Get pointScore
    * @return pointScore
-   */
+  */
+  
   @Schema(name = "pointScore", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("pointScore")
   public String getPointScore() {
@@ -59,9 +63,8 @@ public class MatchUpsertDtoMatchState implements Serializable {
    * minimum: 0
    * maximum: 1
    * @return servingIndex
-   */
-  @Min(0)
-  @Max(1)
+  */
+  @Min(0) @Max(1) 
   @Schema(name = "servingIndex", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("servingIndex")
   public Integer getServingIndex() {
@@ -80,7 +83,8 @@ public class MatchUpsertDtoMatchState implements Serializable {
   /**
    * Get setScore
    * @return setScore
-   */
+  */
+  
   @Schema(name = "setScore", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("setScore")
   public String getSetScore() {
@@ -100,9 +104,9 @@ public class MatchUpsertDtoMatchState implements Serializable {
       return false;
     }
     MatchUpsertDtoMatchState matchUpsertDtoMatchState = (MatchUpsertDtoMatchState) o;
-    return Objects.equals(this.pointScore, matchUpsertDtoMatchState.pointScore)
-        && Objects.equals(this.servingIndex, matchUpsertDtoMatchState.servingIndex)
-        && Objects.equals(this.setScore, matchUpsertDtoMatchState.setScore);
+    return Objects.equals(this.pointScore, matchUpsertDtoMatchState.pointScore) &&
+        Objects.equals(this.servingIndex, matchUpsertDtoMatchState.servingIndex) &&
+        Objects.equals(this.setScore, matchUpsertDtoMatchState.setScore);
   }
 
   @Override
@@ -132,3 +136,4 @@ public class MatchUpsertDtoMatchState implements Serializable {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

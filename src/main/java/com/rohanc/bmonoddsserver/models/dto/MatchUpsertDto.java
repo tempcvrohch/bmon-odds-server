@@ -1,29 +1,39 @@
-/* (C)2024 */
 package com.rohanc.bmonoddsserver.models.dto;
 
+import java.net.URI;
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.annotation.Generated;
+import com.rohanc.bmonoddsserver.models.dto.LeagueDto;
+import com.rohanc.bmonoddsserver.models.dto.MatchUpsertDtoMatchState;
+import com.rohanc.bmonoddsserver.models.dto.SportDto;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.io.Serializable;
+import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
-import java.io.Serializable;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
 import java.util.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import jakarta.annotation.Generated;
 
 /**
  * Match between players with markets.
  */
+
 @Schema(name = "match-upsert-dto", description = "Match between players with markets.")
 @JsonTypeName("match-upsert-dto")
-@Generated(
-    value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-02-18T11:33:56.064195726Z[Etc/UTC]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
 public class MatchUpsertDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
+
+  private Long id;
 
   private String name;
 
@@ -33,7 +43,8 @@ public class MatchUpsertDto implements Serializable {
 
   private SportDto sport;
 
-  @Valid private List<Long> playerIds = new ArrayList<>();
+  @Valid
+  private List<Long> playerIds = new ArrayList<>();
 
   private MatchUpsertDtoMatchState matchState;
 
@@ -44,19 +55,33 @@ public class MatchUpsertDto implements Serializable {
   /**
    * Constructor with only required parameters
    */
-  public MatchUpsertDto(
-      String name,
-      Boolean live,
-      LeagueDto league,
-      SportDto sport,
-      List<Long> playerIds,
-      MatchUpsertDtoMatchState matchState) {
+  public MatchUpsertDto(String name, Boolean live, LeagueDto league, SportDto sport, List<Long> playerIds, MatchUpsertDtoMatchState matchState) {
     this.name = name;
     this.live = live;
     this.league = league;
     this.sport = sport;
     this.playerIds = playerIds;
     this.matchState = matchState;
+  }
+
+  public MatchUpsertDto id(Long id) {
+    this.id = id;
+    return this;
+  }
+
+  /**
+   * Get id
+   * @return id
+  */
+  
+  @Schema(name = "id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("id")
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public MatchUpsertDto name(String name) {
@@ -67,8 +92,8 @@ public class MatchUpsertDto implements Serializable {
   /**
    * Get name
    * @return name
-   */
-  @NotNull
+  */
+  @NotNull 
   @Schema(name = "name", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("name")
   public String getName() {
@@ -87,8 +112,8 @@ public class MatchUpsertDto implements Serializable {
   /**
    * Get live
    * @return live
-   */
-  @NotNull
+  */
+  @NotNull 
   @Schema(name = "live", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("live")
   public Boolean getLive() {
@@ -107,9 +132,8 @@ public class MatchUpsertDto implements Serializable {
   /**
    * Get league
    * @return league
-   */
-  @NotNull
-  @Valid
+  */
+  @NotNull @Valid 
   @Schema(name = "league", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("league")
   public LeagueDto getLeague() {
@@ -128,9 +152,8 @@ public class MatchUpsertDto implements Serializable {
   /**
    * Get sport
    * @return sport
-   */
-  @NotNull
-  @Valid
+  */
+  @NotNull @Valid 
   @Schema(name = "sport", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("sport")
   public SportDto getSport() {
@@ -157,8 +180,8 @@ public class MatchUpsertDto implements Serializable {
   /**
    * Get playerIds
    * @return playerIds
-   */
-  @NotNull
+  */
+  @NotNull 
   @Schema(name = "playerIds", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("playerIds")
   public List<Long> getPlayerIds() {
@@ -177,9 +200,8 @@ public class MatchUpsertDto implements Serializable {
   /**
    * Get matchState
    * @return matchState
-   */
-  @NotNull
-  @Valid
+  */
+  @NotNull @Valid 
   @Schema(name = "matchState", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("matchState")
   public MatchUpsertDtoMatchState getMatchState() {
@@ -199,23 +221,25 @@ public class MatchUpsertDto implements Serializable {
       return false;
     }
     MatchUpsertDto matchUpsertDto = (MatchUpsertDto) o;
-    return Objects.equals(this.name, matchUpsertDto.name)
-        && Objects.equals(this.live, matchUpsertDto.live)
-        && Objects.equals(this.league, matchUpsertDto.league)
-        && Objects.equals(this.sport, matchUpsertDto.sport)
-        && Objects.equals(this.playerIds, matchUpsertDto.playerIds)
-        && Objects.equals(this.matchState, matchUpsertDto.matchState);
+    return Objects.equals(this.id, matchUpsertDto.id) &&
+        Objects.equals(this.name, matchUpsertDto.name) &&
+        Objects.equals(this.live, matchUpsertDto.live) &&
+        Objects.equals(this.league, matchUpsertDto.league) &&
+        Objects.equals(this.sport, matchUpsertDto.sport) &&
+        Objects.equals(this.playerIds, matchUpsertDto.playerIds) &&
+        Objects.equals(this.matchState, matchUpsertDto.matchState);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, live, league, sport, playerIds, matchState);
+    return Objects.hash(id, name, live, league, sport, playerIds, matchState);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class MatchUpsertDto {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    live: ").append(toIndentedString(live)).append("\n");
     sb.append("    league: ").append(toIndentedString(league)).append("\n");
@@ -237,3 +261,4 @@ public class MatchUpsertDto implements Serializable {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

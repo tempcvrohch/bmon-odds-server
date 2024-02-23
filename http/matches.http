@@ -1,0 +1,4 @@
+@BmonOddsServer_HostAdress = http://localhost:8080
+
+GET {{BmonOddsServer_HostAdress}}/matches/recent
+Accept: application/json

@@ -12,9 +12,6 @@ import org.mapstruct.Mapping;
 public interface MatchUpsertMapper {
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updatedAt", ignore = true)
-  @Mapping(target = "id", ignore = true)
-  @Mapping(target = "live", ignore = true)
-  @Mapping(target = "matchState", ignore = true)
   @Mapping(target = "matchStates", ignore = true)
   MatchDto toDto(MatchUpsertDto matchUpsertDto);
 
@@ -24,11 +21,9 @@ public interface MatchUpsertMapper {
 
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updatedAt", ignore = true)
-  @Mapping(target = "id", ignore = true)
   Match toDbo(MatchUpsertDto matchUpsertDto);
 
   @InheritInverseConfiguration
-  @Mapping(target = "live", ignore = true)
   @Mapping(target = "matchState", ignore = true)
   @Mapping(target = "playerIds", ignore = true)
   MatchUpsertDto fromDbo(Match match);

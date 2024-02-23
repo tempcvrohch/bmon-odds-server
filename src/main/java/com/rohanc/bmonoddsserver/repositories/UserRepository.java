@@ -14,11 +14,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
   @Query(
       value = "UPDATE users SET balance = balance - :amount WHERE id = :userId",
       nativeQuery = true)
-  void reduceBalanceByUsername(@Param("userId") Long userId, @Param("amount") float amount);
+  void reduceBalanceByUsername(@Param("userId") Long userId, @Param("amount") Float amount);
 
   @Modifying
   @Query(
       value = "UPDATE users SET balance = balance + :amount WHERE id = :userId",
       nativeQuery = true)
-  void incrementBalanceByUsername(@Param("userId") Long userId, @Param("amount") float amount);
+  void incrementBalanceByUsername(@Param("userId") Long userId, @Param("amount") Float amount);
 }

@@ -20,69 +20,84 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MatchService {
-  @Autowired private MatchRepository matchRepository;
+	@Autowired
+	private MatchRepository matchRepository;
 
-  @Autowired private MatchStateRepository matchStateRepository;
+	@Autowired
+	private MatchStateRepository matchStateRepository;
 
-  @Autowired private MarketStateRepository marketStateRepository;
+	@Autowired
+	private MarketStateRepository marketStateRepository;
 
-  @Autowired private LiveMatchesService liveMatchesService;
+	@Autowired
+	private LiveMatchesService liveMatchesService;
 
-  @Autowired private MatchMapper matchMapper;
+	@Autowired
+	private MatchMapper matchMapper;
 
-  @Autowired private MatchStateMapper matchStateMapper;
+	@Autowired
+	private MatchStateMapper matchStateMapper;
 
-  @Autowired private MarketStateMapper marketStateMapper;
+	@Autowired
+	private MarketStateMapper marketStateMapper;
 
-  private final int DEFAULT_MARKET_SIZE = 2;
+	private final int DEFAULT_MARKET_SIZE = 2;
 
-  public List<Match> getMatches() {
-    return matchRepository.findAll();
-  }
+	public List<Match> getMatches() {
+		return matchRepository.findAll();
+	}
 
-  public List<MatchDto> getMatchesBetweenDates(OffsetDateTime from, OffsetDateTime to) {
-    var listMatches =
-        matchRepository.findBetweenTimestamps(
-            Timestamp.from(from.toInstant()), Timestamp.from(to.toInstant()));
+	public List<MatchDto> getMatchesBetweenDates(OffsetDateTime from, OffsetDateTime to) {
+		var listMatches = matchRepository.findBetweenTimestamps(
+				Timestamp.from(from.toInstant()), Timestamp.from(to.toInstant()));
 
-    return matchMapper.toDtoList(listMatches);
-  }
+		return matchMapper.toDtoList(listMatches);
+	}
 
-  public MatchDto getMatchById(Long id) {
-    var optionalMatch = matchRepository.findById(id);
-    var match = optionalMatch.orElseThrow(MatchNotFound::new);
+	public MatchDto getMatchById(Long id) {
+		var optionalMatch = matchRepository.findById(id);
+		var match = optionalMatch.orElseThrow(MatchNotFound::new);
 
-    var matchState = matchStateRepository.findLatestByMatchId(id);
-    var marketStates =
-        marketStateRepository.findLatestByMatchIdOrderByIdDescLimit(id, DEFAULT_MARKET_SIZE);
+		var matchStates = matchStateRepository.findAllByMatchId(id);
+		if (matchStates.size() == 0) {
+			throw new MatchNotFound();
+		}
 
-    var matchDto = matchMapper.toDto(match);
-    var matchStateDto = matchStateMapper.toDto(matchState);
-    var marketStatesDtoList = marketStateMapper.toDtoList(marketStates);
+		var matchState = matchStates.get(matchStates.size() - 1);
+		var marketStates = marketStateRepository.findLatestByMatchIdOrderByIdDescLimit(id, DEFAULT_MARKET_SIZE);
 
-    matchStateDto.setMarketStates(marketStatesDtoList);
-    matchDto.setMatchState(matchStateDto);
-    return matchDto;
-  }
+		var matchDto = matchMapper.toDto(match);
+		var matchStateDto = matchStateMapper.toDto(matchState);
+		var matchStatesDto = matchStateMapper.toDtoList(matchStates);
+		var marketStatesDtoList = marketStateMapper.toDtoList(marketStates);
 
-  public List<MarketStateDto> getLatestMarketByMatchId(Long id) {
-    var marketStates =
-        marketStateRepository.findLatestByMatchIdOrderByIdDescLimit(id, DEFAULT_MARKET_SIZE);
-    return marketStateMapper.toDtoList(marketStates);
-  }
+		matchStateDto.setMarketStates(marketStatesDtoList);
+		matchDto.setMatchState(matchStateDto);
+		matchDto.setMatchStates(matchStatesDto);
+		return matchDto;
+	}
 
-  public List<MatchDto> getRecentMatches() {
-    var calendar = new GregorianCalendar();
-    calendar.add(Calendar.DAY_OF_MONTH, -1);
-    var matches = matchRepository.findAfterTimestamp(new Timestamp(calendar.getTimeInMillis()));
-    var matchDtoList = matchMapper.toDtoList(matches);
+	public List<MarketStateDto> getLatestMarketByMatchId(Long id) {
+		var marketStates = marketStateRepository.findLatestByMatchIdOrderByIdDescLimit(id, DEFAULT_MARKET_SIZE);
+		return marketStateMapper.toDtoList(marketStates);
+	}
 
-    matchDtoList.forEach(
-        match ->
-            match.setLive(liveMatchesService.getLiveMatchEntities().containsKey(match.getId())));
+	public List<MatchDto> getRecentMatches() {
+		var calendar = new GregorianCalendar();
+		calendar.add(Calendar.DAY_OF_MONTH, -1);
+		var matches = matchRepository.findAfterTimestamp(new Timestamp(calendar.getTimeInMillis()));
+		var matchDtoList = matchMapper.toDtoList(matches);
 
-    return matchDtoList;
-  }
+		// TODO: should be solved with jpa queries instead of native query
+		for (var match : matchDtoList) {
+			matchStateRepository.findLatestByMatchId(match.getId()).ifPresent(matchState -> {
+				match.setMatchState(matchStateMapper.toDto(matchState));
+			});
+		}
 
-  public class MatchNotFound extends RuntimeException {}
+		return matchDtoList;
+	}
+
+	public class MatchNotFound extends RuntimeException {
+	}
 }

@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @Entity
 @Data
-@Table(name = "sports", schema = "bmon_schema")
+@Table(name = "sports")
 @RequiredArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)

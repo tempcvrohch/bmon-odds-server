@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @MappedSuperclass
@@ -16,17 +18,17 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Data
 public abstract class BaseEntity implements Serializable {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   // TODO: figure out why hibernate is not converting thsese correctly
   // @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "created_at", updatable = false)
-  // @CreatedDate
+  @CreationTimestamp
   private OffsetDateTime createdAt;
 
   // @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "updated_at")
-  // @LastModifiedDate
+  @UpdateTimestamp
   private OffsetDateTime updatedAt;
 }
