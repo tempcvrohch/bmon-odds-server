@@ -40,88 +40,70 @@ import jakarta.annotation.Generated;
 @RequestMapping("${openapi.betMonitorForGeneratingMatchesAndOdds.base-path:/v2}")
 public interface MatchesApi {
 
-    default Optional<NativeWebRequest> getRequest() {
-        return Optional.empty();
-    }
+	default Optional<NativeWebRequest> getRequest() {
+		return Optional.empty();
+	}
 
-    /**
-     * GET /matches : Get all matches or matches between dates.
-     *
-     * @param from Starting date inclusive. (optional)
-     * @param to Ending date exclusive. (optional)
-     * @return a list of matches. (status code 200)
-     */
-    @Operation(
-        operationId = "getMatches",
-        summary = "Get all matches or matches between dates.",
-        tags = { "matches" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "a list of matches.", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MatchDto.class)))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/matches",
-        produces = { "application/json" }
-    )
-    @ResponseStatus(HttpStatus.OK)
-    
-    default List<MatchDto> getMatches(
-        @Parameter(name = "from", description = "Starting date inclusive.", in = ParameterIn.QUERY) @Valid @RequestParam(value = "from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime from,
-        @Parameter(name = "to", description = "Ending date exclusive.", in = ParameterIn.QUERY) @Valid @RequestParam(value = "to", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime to
-    ) throws Exception {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ null, null ]";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        throw new IllegalArgumentException("Not implemented");
+	/**
+	 * GET /matches : Get all matches or matches between dates.
+	 *
+	 * @param from Starting date inclusive. (optional)
+	 * @param to   Ending date exclusive. (optional)
+	 * @return a list of matches. (status code 200)
+	 */
+	@Operation(operationId = "getMatches", summary = "Get all matches or matches between dates.", tags = {
+			"matches" }, responses = {
+					@ApiResponse(responseCode = "200", description = "a list of matches.", content = {
+							@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MatchDto.class)))
+					})
+			})
+	@RequestMapping(method = RequestMethod.GET, value = "/api/matches", produces = { "application/json" })
+	@ResponseStatus(HttpStatus.OK)
 
-    }
+	default List<MatchDto> getMatches(
+			@Parameter(name = "from", description = "Starting date inclusive.", in = ParameterIn.QUERY) @Valid @RequestParam(value = "from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime from,
+			@Parameter(name = "to", description = "Ending date exclusive.", in = ParameterIn.QUERY) @Valid @RequestParam(value = "to", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime to)
+			throws Exception {
+		getRequest().ifPresent(request -> {
+			for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+				if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+					String exampleString = "[ null, null ]";
+					ApiUtil.setExampleResponse(request, "application/json", exampleString);
+					break;
+				}
+			}
+		});
+		throw new IllegalArgumentException("Not implemented");
 
+	}
 
-    /**
-     * GET /matches/recent : Get recent matches.
-     *
-     * @return a list of recent matches. (status code 200)
-     */
-    @Operation(
-        operationId = "getRecentMatches",
-        summary = "Get recent matches.",
-        tags = { "matches" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "a list of recent matches.", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MatchDto.class)))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/matches/recent",
-        produces = { "application/json" }
-    )
-    @ResponseStatus(HttpStatus.OK)
-    
-    default List<MatchDto> getRecentMatches(
-        
-    ) throws Exception {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ null, null ]";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        throw new IllegalArgumentException("Not implemented");
+	/**
+	 * GET /matches/recent : Get recent matches.
+	 *
+	 * @return a list of recent matches. (status code 200)
+	 */
+	@Operation(operationId = "getRecentMatches", summary = "Get recent matches.", tags = { "matches" }, responses = {
+			@ApiResponse(responseCode = "200", description = "a list of recent matches.", content = {
+					@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MatchDto.class)))
+			})
+	})
+	@RequestMapping(method = RequestMethod.GET, value = "/api/matches/recent", produces = { "application/json" })
+	@ResponseStatus(HttpStatus.OK)
 
-    }
+	default List<MatchDto> getRecentMatches(
+
+	) throws Exception {
+		getRequest().ifPresent(request -> {
+			for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+				if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+					String exampleString = "[ null, null ]";
+					ApiUtil.setExampleResponse(request, "application/json", exampleString);
+					break;
+				}
+			}
+		});
+		throw new IllegalArgumentException("Not implemented");
+
+	}
 
 }

@@ -35,7 +35,7 @@ public class UserCoreService implements UserDetailsService {
 	}
 
 	public UserDto register(String username, String password) {
-		if (isInvalidInput(username)) { // TODO: move to service
+		if (isInvalidInput(username)) {
 			throw new InvalidSyntaxCredentials("invalid username");
 		} else if (isInvalidInput(password)) {
 			throw new InvalidSyntaxCredentials("invalid password");

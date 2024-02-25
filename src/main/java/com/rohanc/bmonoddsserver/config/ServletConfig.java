@@ -15,7 +15,7 @@ public class ServletConfig {
 
 			@Override
 			public void onStartup(ServletContext servletContext) throws ServletException {
-				// servletContext.getSessionCookieConfig().setSecure(true);
+				servletContext.getSessionCookieConfig().setSecure(true);
 			}
 		};
 	}

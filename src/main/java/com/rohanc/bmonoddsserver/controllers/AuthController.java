@@ -31,13 +31,15 @@ public class AuthController implements AuthApi {
 
 	@Override
 	public UserDto getUserSession() throws Exception {
+		// TODO: invalidate this somehow when a bet has been placed.
 		var auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().toString() == "anonymousUser") {
 			throw new NotLoggedInException();
 		}
 		UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
 
-		return userMapper.toDto(userPrincipal.getUser());
+		var userDto = userMapper.toDto(userPrincipal.getUser());
+		return userDto;
 	}
 
 	public class NotLoggedInException extends RuntimeException {

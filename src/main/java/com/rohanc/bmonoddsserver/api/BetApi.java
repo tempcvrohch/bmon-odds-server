@@ -39,54 +39,47 @@ import jakarta.annotation.Generated;
 @RequestMapping("${openapi.betMonitorForGeneratingMatchesAndOdds.base-path:/v2}")
 public interface BetApi {
 
-    default Optional<NativeWebRequest> getRequest() {
-        return Optional.empty();
-    }
+	default Optional<NativeWebRequest> getRequest() {
+		return Optional.empty();
+	}
 
-    /**
-     * POST /bet/place/{marketStateId} : Place a wager.
-     *
-     * @param X_XSRF_TOKEN  (required)
-     * @param marketStateId Id of the market state to place the bet on. (required)
-     * @param betPlaceDto  (required)
-     * @return A bet was successfully placed and balance was substracted. (status code 200)
-     *         or The bet was already placed or insufficient funds or stake out of bounds or unknown market. (status code 400)
-     */
-    @Operation(
-        operationId = "placeBet",
-        summary = "Place a wager.",
-        tags = { "bet" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "A bet was successfully placed and balance was substracted.", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = BetDto.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "The bet was already placed or insufficient funds or stake out of bounds or unknown market.")
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/bet/place/{marketStateId}",
-        produces = { "application/json" },
-        consumes = { "application/json" }
-    )
-    @ResponseStatus(HttpStatus.OK)
-    
-    default BetDto placeBet(
-        @NotNull @Parameter(name = "X-XSRF-TOKEN", description = "", required = true, in = ParameterIn.HEADER) @RequestHeader(value = "X-XSRF-TOKEN", required = true) String X_XSRF_TOKEN,
-        @Parameter(name = "marketStateId", description = "Id of the market state to place the bet on.", required = true, in = ParameterIn.PATH) @PathVariable("marketStateId") Long marketStateId,
-        @Parameter(name = "BetPlaceDto", description = "", required = true) @Valid @RequestBody BetPlaceDto betPlaceDto
-    ) throws Exception {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"stake\" : 0, \"updated_at\" : \"2000-01-23T04:56:07.000+00:00\", \"toReturn\" : 1.4658129, \"created_at\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : 0 }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        throw new IllegalArgumentException("Not implemented");
+	/**
+	 * POST /bet/place/{marketStateId} : Place a wager.
+	 *
+	 * @param X_XSRF_TOKEN  (required)
+	 * @param marketStateId Id of the market state to place the bet on. (required)
+	 * @param betPlaceDto   (required)
+	 * @return A bet was successfully placed and balance was substracted. (status
+	 *         code 200)
+	 *         or The bet was already placed or insufficient funds or stake out of
+	 *         bounds or unknown market. (status code 400)
+	 */
+	@Operation(operationId = "placeBet", summary = "Place a wager.", tags = { "bet" }, responses = {
+			@ApiResponse(responseCode = "200", description = "A bet was successfully placed and balance was substracted.", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = BetDto.class))
+			}),
+			@ApiResponse(responseCode = "400", description = "The bet was already placed or insufficient funds or stake out of bounds or unknown market.")
+	})
+	@RequestMapping(method = RequestMethod.POST, value = "/api/bet/place/{marketStateId}", produces = {
+			"application/json" }, consumes = { "application/json" })
+	@ResponseStatus(HttpStatus.OK)
 
-    }
+	default BetDto placeBet(
+			@NotNull @Parameter(name = "X-XSRF-TOKEN", description = "", required = true, in = ParameterIn.HEADER) @RequestHeader(value = "X-XSRF-TOKEN", required = true) String X_XSRF_TOKEN,
+			@Parameter(name = "marketStateId", description = "Id of the market state to place the bet on.", required = true, in = ParameterIn.PATH) @PathVariable("marketStateId") Long marketStateId,
+			@Parameter(name = "BetPlaceDto", description = "", required = true) @Valid @RequestBody BetPlaceDto betPlaceDto)
+			throws Exception {
+		getRequest().ifPresent(request -> {
+			for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+				if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+					String exampleString = "{ \"stake\" : 0, \"updated_at\" : \"2000-01-23T04:56:07.000+00:00\", \"toReturn\" : 1.4658129, \"created_at\" : \"2000-01-23T04:56:07.000+00:00\", \"id\" : 0 }";
+					ApiUtil.setExampleResponse(request, "application/json", exampleString);
+					break;
+				}
+			}
+		});
+		throw new IllegalArgumentException("Not implemented");
+
+	}
 
 }

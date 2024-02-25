@@ -4,8 +4,10 @@ logging:
   level:
     org:
       hibernate:
-        SQL: DEBUG
-        type: TRACE
+        # log statements(SQL) and parameter values(type.)
+        # SQL: DEBUG
+        # type.descriptor.sql: TRACE
+      # log requests
       springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
 
 spring: 
@@ -13,6 +15,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
+      # TODO: fix validation errors
       # ddl-auto: validate
   flyway:
     createSchemas: true

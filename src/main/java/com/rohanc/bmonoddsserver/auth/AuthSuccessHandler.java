@@ -22,12 +22,8 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	@Override
 	public void onAuthenticationSuccess(
 			HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-		response.setHeader("Access-Control-Allow-Credentials", "true");
-		response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-		response.setHeader("Access-Control-Expose-Headers", "Set-Cookie");
-
 		clearAuthenticationAttributes(request);
-		// getRedirectStrategy().sendRedirect(request, response, "/auth/session");
+		getRedirectStrategy().sendRedirect(request, response, "/api/auth/session");
 	}
 
 	public void setRequestCache(RequestCache requestCache) {

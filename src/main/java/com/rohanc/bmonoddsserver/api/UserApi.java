@@ -38,48 +38,40 @@ import jakarta.annotation.Generated;
 @RequestMapping("${openapi.betMonitorForGeneratingMatchesAndOdds.base-path:/v2}")
 public interface UserApi {
 
-    default Optional<NativeWebRequest> getRequest() {
-        return Optional.empty();
-    }
+	default Optional<NativeWebRequest> getRequest() {
+		return Optional.empty();
+	}
 
-    /**
-     * GET /user/bets/pending : Get user pending bets.
-     *
-     * @return The list of bets that are pending. (status code 200)
-     *         or The user was not logged in. (status code 401)
-     */
-    @Operation(
-        operationId = "getUserBetsPending",
-        summary = "Get user pending bets.",
-        tags = { "user", "bets" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "The list of bets that are pending.", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = BetDto.class)))
-            }),
-            @ApiResponse(responseCode = "401", description = "The user was not logged in.")
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/user/bets/pending",
-        produces = { "application/json" }
-    )
-    @ResponseStatus(HttpStatus.OK)
-    
-    default List<BetDto> getUserBetsPending(
-        
-    ) throws Exception {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ null, null ]";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        throw new IllegalArgumentException("Not implemented");
+	/**
+	 * GET /user/bets/pending : Get user pending bets.
+	 *
+	 * @return The list of bets that are pending. (status code 200)
+	 *         or The user was not logged in. (status code 401)
+	 */
+	@Operation(operationId = "getUserBetsPending", summary = "Get user pending bets.", tags = { "user",
+			"bets" }, responses = {
+					@ApiResponse(responseCode = "200", description = "The list of bets that are pending.", content = {
+							@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = BetDto.class)))
+					}),
+					@ApiResponse(responseCode = "401", description = "The user was not logged in.")
+			})
+	@RequestMapping(method = RequestMethod.GET, value = "/api/user/bets/pending", produces = { "application/json" })
+	@ResponseStatus(HttpStatus.OK)
 
-    }
+	default List<BetDto> getUserBetsPending(
+
+	) throws Exception {
+		getRequest().ifPresent(request -> {
+			for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+				if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+					String exampleString = "[ null, null ]";
+					ApiUtil.setExampleResponse(request, "application/json", exampleString);
+					break;
+				}
+			}
+		});
+		throw new IllegalArgumentException("Not implemented");
+
+	}
 
 }

@@ -38,46 +38,37 @@ import jakarta.annotation.Generated;
 @RequestMapping("${openapi.betMonitorForGeneratingMatchesAndOdds.base-path:/v2}")
 public interface PlayersApi {
 
-    default Optional<NativeWebRequest> getRequest() {
-        return Optional.empty();
-    }
+	default Optional<NativeWebRequest> getRequest() {
+		return Optional.empty();
+	}
 
-    /**
-     * GET /players : Get all players.
-     *
-     * @return a list of players. (status code 200)
-     */
-    @Operation(
-        operationId = "getAllPlayers",
-        summary = "Get all players.",
-        tags = { "players" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "a list of players.", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = PlayerDto.class)))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/players",
-        produces = { "application/json" }
-    )
-    @ResponseStatus(HttpStatus.OK)
-    
-    default List<PlayerDto> getAllPlayers(
-        
-    ) throws Exception {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ null, null ]";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        throw new IllegalArgumentException("Not implemented");
+	/**
+	 * GET /players : Get all players.
+	 *
+	 * @return a list of players. (status code 200)
+	 */
+	@Operation(operationId = "getAllPlayers", summary = "Get all players.", tags = { "players" }, responses = {
+			@ApiResponse(responseCode = "200", description = "a list of players.", content = {
+					@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = PlayerDto.class)))
+			})
+	})
+	@RequestMapping(method = RequestMethod.GET, value = "/api/players", produces = { "application/json" })
+	@ResponseStatus(HttpStatus.OK)
 
-    }
+	default List<PlayerDto> getAllPlayers(
+
+	) throws Exception {
+		getRequest().ifPresent(request -> {
+			for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+				if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+					String exampleString = "[ null, null ]";
+					ApiUtil.setExampleResponse(request, "application/json", exampleString);
+					break;
+				}
+			}
+		});
+		throw new IllegalArgumentException("Not implemented");
+
+	}
 
 }

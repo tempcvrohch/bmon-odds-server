@@ -50,20 +50,20 @@ public class SecurityConfiguration {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	// CsrfWebFilter
+	// TODO: define a const with /api and perhaps all urls
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors(Customizer.withDefaults())
 				.csrf(
-						(csrf) -> csrf.ignoringRequestMatchers("/auth/**", "/match/**")
+						(csrf) -> csrf.ignoringRequestMatchers("/api/auth/**", "/api/match/**")
 								.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 								.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
 				.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
 				.authorizeHttpRequests(
 						(authorize) -> authorize
-								.requestMatchers("/user/**", "/bet/**")
+								.requestMatchers("/api/user/**", "/api/bet/**")
 								.authenticated()
-								.requestMatchers("/**")
+								.requestMatchers("/api/**")
 								.permitAll())
 				.formLogin(
 						(formLogin) -> formLogin
@@ -71,8 +71,9 @@ public class SecurityConfiguration {
 								.passwordParameter("password")
 								.loginPage("/login")
 								.failureUrl("/login?failed")
-								.loginProcessingUrl("/auth/login")
-								.successHandler(authSuccessHandler));
+								.loginProcessingUrl("/api/auth/login")
+								.successHandler(authSuccessHandler))
+				.logout((logout) -> logout.logoutUrl("/api/auth/logout"));
 		// .formLogin(Customizer.withDefaults()).rememberMe(Customizer.withDefaults());
 		return http.build();
 	}
@@ -90,9 +91,10 @@ public class SecurityConfiguration {
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowCredentials(true);
 		configuration.setAllowedOrigins(
-				Arrays.asList("https://localhost:3000/", "http://localhost:3000/"));
+				Arrays.asList("https://localhost/", "http://localhost/"));
 		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
 		configuration.setAllowedHeaders(Arrays.asList("Content-Type", CSRF_TOKEN_HEADERNAME));
+		configuration.setExposedHeaders(Arrays.asList("Set-Cookie"));
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
