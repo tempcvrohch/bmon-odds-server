@@ -1,32 +1,25 @@
+/* (C)2024 */
 package com.rohanc.bmonoddsserver.models.dto;
 
-import java.net.URI;
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.rohanc.bmonoddsserver.models.dto.BetStatusDto;
-import com.rohanc.bmonoddsserver.models.dto.MarketStateDto;
-import java.time.OffsetDateTime;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.io.Serializable;
-import java.time.OffsetDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
-import io.swagger.v3.oas.annotations.media.Schema;
-
-
+import java.io.Serializable;
+import java.time.OffsetDateTime;
 import java.util.*;
-import jakarta.annotation.Generated;
+import java.util.Objects;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * BetDto
  */
-
 @JsonTypeName("bet-dto")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
+@Generated(
+    value = "org.openapitools.codegen.languages.SpringCodegen",
+    date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
 public class BetDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -68,8 +61,8 @@ public class BetDto implements Serializable {
   /**
    * Get id
    * @return id
-  */
-  @NotNull 
+   */
+  @NotNull
   @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public Long getId() {
@@ -88,8 +81,8 @@ public class BetDto implements Serializable {
   /**
    * Get createdAt
    * @return createdAt
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "created_at", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("created_at")
   public OffsetDateTime getCreatedAt() {
@@ -108,8 +101,8 @@ public class BetDto implements Serializable {
   /**
    * Get updatedAt
    * @return updatedAt
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "updated_at", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("updated_at")
   public OffsetDateTime getUpdatedAt() {
@@ -129,8 +122,9 @@ public class BetDto implements Serializable {
    * Get stake
    * minimum: 0
    * @return stake
-  */
-  @NotNull @Min(0) 
+   */
+  @NotNull
+  @Min(0)
   @Schema(name = "stake", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("stake")
   public Integer getStake() {
@@ -149,8 +143,9 @@ public class BetDto implements Serializable {
   /**
    * Get status
    * @return status
-  */
-  @NotNull @Valid 
+   */
+  @NotNull
+  @Valid
   @Schema(name = "status", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("status")
   public BetStatusDto getStatus() {
@@ -169,8 +164,7 @@ public class BetDto implements Serializable {
   /**
    * Get toReturn
    * @return toReturn
-  */
-  
+   */
   @Schema(name = "toReturn", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("toReturn")
   public Float getToReturn() {
@@ -189,8 +183,8 @@ public class BetDto implements Serializable {
   /**
    * Get marketState
    * @return marketState
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "marketState", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("marketState")
   public MarketStateDto getMarketState() {
@@ -210,13 +204,13 @@ public class BetDto implements Serializable {
       return false;
     }
     BetDto betDto = (BetDto) o;
-    return Objects.equals(this.id, betDto.id) &&
-        Objects.equals(this.createdAt, betDto.createdAt) &&
-        Objects.equals(this.updatedAt, betDto.updatedAt) &&
-        Objects.equals(this.stake, betDto.stake) &&
-        Objects.equals(this.status, betDto.status) &&
-        Objects.equals(this.toReturn, betDto.toReturn) &&
-        Objects.equals(this.marketState, betDto.marketState);
+    return Objects.equals(this.id, betDto.id)
+        && Objects.equals(this.createdAt, betDto.createdAt)
+        && Objects.equals(this.updatedAt, betDto.updatedAt)
+        && Objects.equals(this.stake, betDto.stake)
+        && Objects.equals(this.status, betDto.status)
+        && Objects.equals(this.toReturn, betDto.toReturn)
+        && Objects.equals(this.marketState, betDto.marketState);
   }
 
   @Override
@@ -250,4 +244,3 @@ public class BetDto implements Serializable {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

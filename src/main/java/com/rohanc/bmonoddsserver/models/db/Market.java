@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class Market extends BaseEntity {
-	@NonNull
-	@Column(nullable = false)
-	private String name;
+  @NonNull
+  @Column(nullable = false)
+  private String name;
 }

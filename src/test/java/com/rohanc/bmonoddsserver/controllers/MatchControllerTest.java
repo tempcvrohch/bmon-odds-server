@@ -1,3 +1,4 @@
+/* (C)2024 */
 package com.rohanc.bmonoddsserver.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,7 +10,6 @@ import com.rohanc.bmonoddsserver.models.dto.MatchUpsertDto;
 import com.rohanc.bmonoddsserver.services.LiveMatchesService;
 import com.rohanc.bmonoddsserver.services.MatchService;
 import com.rohanc.bmonoddsserver.services.helpers.MatchUpsertHelper;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,39 +33,38 @@ import org.springframework.web.context.WebApplicationContext;
 @ActiveProfiles("integrationtest")
 @TestInstance(Lifecycle.PER_CLASS)
 public class MatchControllerTest {
-	MockMvc mockMvc;
+  MockMvc mockMvc;
 
-	@Autowired
-	WebApplicationContext webApplicationContext;
+  @Autowired WebApplicationContext webApplicationContext;
 
-	@MockBean
-	MatchService matchService;
+  @MockBean MatchService matchService;
 
-	@MockBean
-	LiveMatchesService liveMatchesService;
+  @MockBean LiveMatchesService liveMatchesService;
 
-	MatchUpsertDto matchUpsertDto;
+  MatchUpsertDto matchUpsertDto;
 
-	@BeforeAll
-	void setup() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-	}
+  @BeforeAll
+  void setup() {
+    mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+  }
 
-	@BeforeEach
-	void setupEach() {
-		matchUpsertDto = MatchUpsertHelper.NewMatchUpsertDto();
-	}
+  @BeforeEach
+  void setupEach() {
+    matchUpsertDto = MatchUpsertHelper.NewMatchUpsertDto();
+  }
 
-	@Test
-	void givenNone_createMatch_matchInserted() throws Exception {
-		// verify(liveMatchesService.createMatch(any(MatchUpsertDto.class)));
-		var objectMapper = new ObjectMapper();
-		var body = objectMapper.writeValueAsString(matchUpsertDto);
+  @Test
+  void givenNone_createMatch_matchInserted() throws Exception {
+    // verify(liveMatchesService.createMatch(any(MatchUpsertDto.class)));
+    var objectMapper = new ObjectMapper();
+    var body = objectMapper.writeValueAsString(matchUpsertDto);
 
-		var req = MockMvcRequestBuilders.post("/match").contentType(MediaType.APPLICATION_JSON).content(body)
-				.with(SecurityMockMvcRequestPostProcessors.csrf());
-		mockMvc.perform(req)
-				.andExpect(result -> assertEquals(200, result.getResponse().getStatus()));
-		verify(liveMatchesService).createMatch(argThat(dto -> dto.getLeague().getId() == 1L));
-	}
+    var req =
+        MockMvcRequestBuilders.post("/match")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body)
+            .with(SecurityMockMvcRequestPostProcessors.csrf());
+    mockMvc.perform(req).andExpect(result -> assertEquals(200, result.getResponse().getStatus()));
+    verify(liveMatchesService).createMatch(argThat(dto -> dto.getLeague().getId() == 1L));
+  }
 }

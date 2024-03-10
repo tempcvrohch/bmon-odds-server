@@ -9,6 +9,11 @@ logging:
         # type.descriptor.sql: TRACE
       # log requests
       springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+      postgresql: DEBUG
+    com:
+      zaxxer: 
+        hikari:
+          HikariConfig: DEBUG
 
 spring: 
   debug: ${SPRING_DEBUG}

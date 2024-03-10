@@ -16,7 +16,7 @@ plugins {
 }
 
 group = 'com.rohanc'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.3-SNAPSHOT'
 
 java {
 	sourceCompatibility = '17'
@@ -32,6 +32,11 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+}
+
+// TODO: fix the tag 
+tasks.named("bootBuildImage") {
+	imageName = "bmon-odds/server:1.0.3"
 }
 
 repositories {
@@ -100,4 +105,3 @@ spotless {
 		licenseHeader '/* (C)$YEAR */'
 	}
 }
-//////////////////////////////////////////

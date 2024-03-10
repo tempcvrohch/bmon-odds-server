@@ -1,0 +1,114 @@
+replicaCount: 1
+
+image:
+  repository: bmon-odds/server
+  pullPolicy: IfNotPresent
+  tag: latest
+  #tag: 1.0.2
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  name: backend-service
+  type: ClusterIP
+  port: 80
+
+# TODO: resolve duplicate nginx instances
+# TODO: rewrite the ingress.yaml
+ingress:
+  enabled: true
+  className: nginx
+  annotations: 
+    #nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
+    #nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    #nginx.ingress.kubernetes.io/hsts: 'true'
+    #nginx.ingress.kubernetes.io/hsts-include-subdomains: 'true'
+    #nginx.ingress.kubernetes.io/hsts-max-age: '31536000'
+
+  hosts:
+    - host: bmon-odds.local
+      paths:
+        - path: "/"
+          pathType: "Prefix"
+          backend:
+            service: "backend-service"
+            port: 8080
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+
+livenessProbe:
+  initialDelaySeconds: 30
+  httpGet:
+    path: /api/sports
+    port: 8080
+readinessProbe:
+  initialDelaySeconds: 20
+  httpGet:
+    path: /api/sports
+    port: 8080
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+volumes: []
+
+volumeMounts: []
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+#env
+postgresql:
+  enabled: true
+  auth:
+    postgresPassword: POSTGRESPASSWORD_CHANGETHIS
+  primary:
+    name: NAME_CHANGETHIS
+    initdb:
+      scriptsConfigMap: "configmap-postgresql-init"
+
+# TODO: add existingSecret
+global:
+  postgresql:
+    auth:
+      username: USERNAME_CHANGETHIS
+      password: PASSWORD_CHANGETHIS
+      database: DATABASE_CHANGETHIS
+      url: URL_CHANGETHIS
+    service:
+      ports:
+        postgresql: 5432
+
+bmonodds:
+  server:
+    spring:
+      profilesActive: PROFILES_ACTIVE_CHANGETHIS
+      debug: DEBUG_CHANGETHIS
+    schema:
+      app: APP_SCHEMA_CHANGETHIS
+      flyway: FLYWAY_SCHEMA_CHANGETHIS

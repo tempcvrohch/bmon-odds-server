@@ -1,29 +1,25 @@
+/* (C)2024 */
 package com.rohanc.bmonoddsserver.models.dto;
 
-import java.net.URI;
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.OffsetDateTime;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.io.Serializable;
-import java.time.OffsetDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
-import io.swagger.v3.oas.annotations.media.Schema;
-
-
+import java.io.Serializable;
+import java.time.OffsetDateTime;
 import java.util.*;
-import jakarta.annotation.Generated;
+import java.util.Objects;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * UserDto
  */
-
 @JsonTypeName("user-dto")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
+@Generated(
+    value = "org.openapitools.codegen.languages.SpringCodegen",
+    date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
 public class UserDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -60,8 +56,8 @@ public class UserDto implements Serializable {
   /**
    * Get id
    * @return id
-  */
-  @NotNull 
+   */
+  @NotNull
   @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public Long getId() {
@@ -80,8 +76,8 @@ public class UserDto implements Serializable {
   /**
    * Get createdAt
    * @return createdAt
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "created_at", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("created_at")
   public OffsetDateTime getCreatedAt() {
@@ -100,8 +96,8 @@ public class UserDto implements Serializable {
   /**
    * Get updatedAt
    * @return updatedAt
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "updated_at", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("updated_at")
   public OffsetDateTime getUpdatedAt() {
@@ -120,8 +116,9 @@ public class UserDto implements Serializable {
   /**
    * Get username
    * @return username
-  */
-  @NotNull @Size(min = 6, max = 32) 
+   */
+  @NotNull
+  @Size(min = 6, max = 32)
   @Schema(name = "username", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("username")
   public String getUsername() {
@@ -140,8 +137,7 @@ public class UserDto implements Serializable {
   /**
    * Get balance
    * @return balance
-  */
-  
+   */
   @Schema(name = "balance", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("balance")
   public Long getBalance() {
@@ -161,11 +157,11 @@ public class UserDto implements Serializable {
       return false;
     }
     UserDto userDto = (UserDto) o;
-    return Objects.equals(this.id, userDto.id) &&
-        Objects.equals(this.createdAt, userDto.createdAt) &&
-        Objects.equals(this.updatedAt, userDto.updatedAt) &&
-        Objects.equals(this.username, userDto.username) &&
-        Objects.equals(this.balance, userDto.balance);
+    return Objects.equals(this.id, userDto.id)
+        && Objects.equals(this.createdAt, userDto.createdAt)
+        && Objects.equals(this.updatedAt, userDto.updatedAt)
+        && Objects.equals(this.username, userDto.username)
+        && Objects.equals(this.balance, userDto.balance);
   }
 
   @Override
@@ -197,4 +193,3 @@ public class UserDto implements Serializable {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

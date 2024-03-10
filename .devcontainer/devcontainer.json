@@ -8,11 +8,21 @@
       "settings": {
         "terminal.integrated.shell.linux": "/bin/bash"
       },
-      "extensions": ["humao.rest-client", "vscjava.vscode-java-pack", "esbenp.prettier-vscode", "visualstudioexptteam.vscodeintellicode"]
+      "extensions": [
+        "humao.rest-client",
+        "vscjava.vscode-java-pack",
+        "esbenp.prettier-vscode",
+        "visualstudioexptteam.vscodeintellicode"
+      ]
     }
   },
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+      "version": "latest",
+      "helm": "latest",
+      "minikube": "latest"
+    }
   },
   "postCreateCommand": {
     "bmon-workspace-.gradle": "sudo chown vscode .gradle",

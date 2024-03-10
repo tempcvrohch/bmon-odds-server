@@ -1,0 +1,18 @@
+# args: ['include "bmonodds.protocol" $ : .Values.ingress.host /api/sports'
+{{- if .Values.ingress.enabled -}}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "bmonodds.fullname" . }}-test-connection"
+  labels:
+    {{- include "bmonodds.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['http://{{ .Values.ingress.host }}/api/sports']
+  restartPolicy: Never
+{{- end -}}

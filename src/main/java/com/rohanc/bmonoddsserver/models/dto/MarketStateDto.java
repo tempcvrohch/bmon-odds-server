@@ -1,31 +1,25 @@
+/* (C)2024 */
 package com.rohanc.bmonoddsserver.models.dto;
 
-import java.net.URI;
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.rohanc.bmonoddsserver.models.dto.MarketDto;
-import com.rohanc.bmonoddsserver.models.dto.PlayerDto;
-import java.time.OffsetDateTime;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.io.Serializable;
-import java.time.OffsetDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
-import io.swagger.v3.oas.annotations.media.Schema;
-
-
+import java.io.Serializable;
+import java.time.OffsetDateTime;
 import java.util.*;
-import jakarta.annotation.Generated;
+import java.util.Objects;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * MarketStateDto
  */
-
 @JsonTypeName("market-state-dto")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
+@Generated(
+    value = "org.openapitools.codegen.languages.SpringCodegen",
+    date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
 public class MarketStateDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -69,8 +63,8 @@ public class MarketStateDto implements Serializable {
   /**
    * Get id
    * @return id
-  */
-  @NotNull 
+   */
+  @NotNull
   @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public Long getId() {
@@ -89,8 +83,8 @@ public class MarketStateDto implements Serializable {
   /**
    * Get createdAt
    * @return createdAt
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "created_at", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("created_at")
   public OffsetDateTime getCreatedAt() {
@@ -109,8 +103,8 @@ public class MarketStateDto implements Serializable {
   /**
    * Get updatedAt
    * @return updatedAt
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "updated_at", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("updated_at")
   public OffsetDateTime getUpdatedAt() {
@@ -131,8 +125,10 @@ public class MarketStateDto implements Serializable {
    * minimum: 1
    * maximum: 100
    * @return odd
-  */
-  @NotNull @DecimalMin("1") @DecimalMax("100") 
+   */
+  @NotNull
+  @DecimalMin("1")
+  @DecimalMax("100")
   @Schema(name = "odd", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("odd")
   public Float getOdd() {
@@ -151,8 +147,8 @@ public class MarketStateDto implements Serializable {
   /**
    * Get suspended
    * @return suspended
-  */
-  @NotNull 
+   */
+  @NotNull
   @Schema(name = "suspended", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("suspended")
   public Boolean getSuspended() {
@@ -172,8 +168,8 @@ public class MarketStateDto implements Serializable {
    * Get stakeLimit
    * minimum: 0
    * @return stakeLimit
-  */
-  @Min(0) 
+   */
+  @Min(0)
   @Schema(name = "stakeLimit", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("stakeLimit")
   public Integer getStakeLimit() {
@@ -192,8 +188,8 @@ public class MarketStateDto implements Serializable {
   /**
    * Get market
    * @return market
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "market", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("market")
   public MarketDto getMarket() {
@@ -212,8 +208,8 @@ public class MarketStateDto implements Serializable {
   /**
    * Get player
    * @return player
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "player", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("player")
   public PlayerDto getPlayer() {
@@ -233,14 +229,14 @@ public class MarketStateDto implements Serializable {
       return false;
     }
     MarketStateDto marketStateDto = (MarketStateDto) o;
-    return Objects.equals(this.id, marketStateDto.id) &&
-        Objects.equals(this.createdAt, marketStateDto.createdAt) &&
-        Objects.equals(this.updatedAt, marketStateDto.updatedAt) &&
-        Objects.equals(this.odd, marketStateDto.odd) &&
-        Objects.equals(this.suspended, marketStateDto.suspended) &&
-        Objects.equals(this.stakeLimit, marketStateDto.stakeLimit) &&
-        Objects.equals(this.market, marketStateDto.market) &&
-        Objects.equals(this.player, marketStateDto.player);
+    return Objects.equals(this.id, marketStateDto.id)
+        && Objects.equals(this.createdAt, marketStateDto.createdAt)
+        && Objects.equals(this.updatedAt, marketStateDto.updatedAt)
+        && Objects.equals(this.odd, marketStateDto.odd)
+        && Objects.equals(this.suspended, marketStateDto.suspended)
+        && Objects.equals(this.stakeLimit, marketStateDto.stakeLimit)
+        && Objects.equals(this.market, marketStateDto.market)
+        && Objects.equals(this.player, marketStateDto.player);
   }
 
   @Override
@@ -275,4 +271,3 @@ public class MarketStateDto implements Serializable {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

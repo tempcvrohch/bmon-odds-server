@@ -1,3 +1,4 @@
+/* (C)2024 */
 package com.rohanc.bmonoddsserver.config;
 
 import org.springframework.context.annotation.Bean;
@@ -8,8 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class BcryptConfig {
 
-	@Bean
-	public PasswordEncoder encoder() {
-		return (PasswordEncoder) new BCryptPasswordEncoder();
-	}
+  @Bean
+  public PasswordEncoder encoder() {
+    return (PasswordEncoder) new BCryptPasswordEncoder();
+  }
 }

@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "bmonodds.fullname" . }}
+  labels:
+    {{- include "bmonodds.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "bmonodds.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "bmonodds.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "bmonodds.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          env:
+            - name: POSTGRES_USER
+              value: {{ .Values.global.postgresql.auth.username | quote }}
+            - name: POSTGRES_PASS
+              value: {{ .Values.global.postgresql.auth.password | quote }}
+            - name: POSTGRES_DB
+              value: {{ .Values.global.postgresql.auth.database | quote }}
+            - name: POSTGRES_URL
+              value: {{ .Values.global.postgresql.auth.url | quote }}
+            - name: POSTGRES_PORT
+              value: {{ .Values.global.postgresql.service.ports.postgresql | quote }}
+            - name: POSTGRES_SCHEMA
+              value: {{ .Values.bmonodds.server.schema.app | quote }}
+            - name: FLYWAY_SCHEMA
+              value: {{ .Values.bmonodds.server.schema.flyway | quote }}
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ .Values.bmonodds.server.spring.profilesActive | quote }}
+            - name: SPRING_DEBUG
+              value: {{ .Values.bmonodds.server.spring.debug | quote }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

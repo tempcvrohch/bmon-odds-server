@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.postgresql.primary.initdb.scriptsConfigMap }}
+  labels:
+    app: {{- .Release.Name | quote -}}
+data:
+  01_init_db.sql: |
+    CREATE IF NOT EXISTS '{{- .Values.bmonodds.server.schema.app }}'';
+    CREATE IF NOT EXISTS '{{- .Values.bmonodds.server.schema.flyway }}';

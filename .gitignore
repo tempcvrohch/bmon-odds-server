@@ -5,6 +5,8 @@
 .env 
 .env.test
 /nginx/certs/*
+*.out
+*.tgz
 
 ### STS ###
 .apt_generated

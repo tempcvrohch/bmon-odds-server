@@ -25,103 +25,95 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integrationtest")
 public class BetServiceTests {
-	@Autowired
-	UserService userService;
+  @Autowired UserService userService;
 
-	@Autowired
-	UserCoreService userCoreService;
+  @Autowired UserCoreService userCoreService;
 
-	@Autowired
-	LiveMatchesService liveMatchesService;
+  @Autowired LiveMatchesService liveMatchesService;
 
-	@Autowired
-	BetService betService;
+  @Autowired BetService betService;
 
-	@Autowired
-	UserMapper userMapper;
+  @Autowired UserMapper userMapper;
 
-	@Autowired
-	UserRepository userRepository;
+  @Autowired UserRepository userRepository;
 
-	@Autowired
-	BetRepository betRepository;
+  @Autowired BetRepository betRepository;
 
-	@Autowired
-	Flyway flyway;
+  @Autowired Flyway flyway;
 
-	UserDto userDto;
-	MatchUpsertDto matchUpsertDto;
-	User user;
-	Float stake;
+  UserDto userDto;
+  MatchUpsertDto matchUpsertDto;
+  User user;
+  Float stake;
 
-	@BeforeEach
-	void setup() {
-		flyway.clean();
-		flyway.migrate();
+  @BeforeEach
+  void setup() {
+    flyway.clean();
+    flyway.migrate();
 
-		userDto = userCoreService.register("test_buddy", "secret");
-		user = userMapper.fromDto(userDto);
-		matchUpsertDto = MatchUpsertHelper.NewMatchUpsertDto();
-		var insertedMatchDto = liveMatchesService.createMatch(matchUpsertDto);
+    userDto = userCoreService.register("test_buddy", "secret");
+    user = userMapper.fromDto(userDto);
+    matchUpsertDto = MatchUpsertHelper.NewMatchUpsertDto();
+    var insertedMatchDto = liveMatchesService.createMatch(matchUpsertDto);
 
-		matchUpsertDto.setId(insertedMatchDto.getId());
-		stake = 10F;
-	}
+    matchUpsertDto.setId(insertedMatchDto.getId());
+    stake = 10F;
+  }
 
-	@Test
-	void givenExistingMatchAndUser_addBet_persistedBet() {
-		var betDto = betService.addBet(user, stake, 1L);
-		assertEquals(1L, betDto.getId());
+  @Test
+  void givenExistingMatchAndUser_addBet_persistedBet() {
+    var betDto = betService.addBet(user, stake, 1L);
+    assertEquals(1L, betDto.getId());
 
-		var persistedUser = userRepository.findById(user.getId()).orElseThrow();
-		assertEquals(990F, persistedUser.getBalance());
-	}
+    var persistedUser = userRepository.findById(user.getId()).orElseThrow();
+    assertEquals(990F, persistedUser.getBalance());
+  }
 
-	@Test
-	void givenPlacedBetAndFinishedMatch_processUserBetsOnMatch_userWonBet() {
-		betService.addBet(user, stake, 1L);
+  @Test
+  void givenPlacedBetAndFinishedMatch_processUserBetsOnMatch_userWonBet() {
+    betService.addBet(user, stake, 1L);
 
-		matchUpsertDto.getMatchState().setScore("7-5,7-4,7-3");
-		matchUpsertDto.getMatchState().setPointScore("40-0");
-		matchUpsertDto.setLive(false);
+    matchUpsertDto.getMatchState().setScore("7-5,7-4,7-3");
+    matchUpsertDto.getMatchState().setPointScore("40-0");
+    matchUpsertDto.setLive(false);
 
-		liveMatchesService.updateMatchAndStates(matchUpsertDto);
-		var persistedBet = betRepository.findById(1L).orElseThrow();
-		var persistedUser = userRepository.findById(1L).orElseThrow();
+    liveMatchesService.updateMatchAndStates(matchUpsertDto);
+    var persistedBet = betRepository.findById(1L).orElseThrow();
+    var persistedUser = userRepository.findById(1L).orElseThrow();
 
-		assertEquals(1010F, persistedUser.getBalance());
-		assertEquals(persistedBet.getStatus(), BetStatus.WIN);
-	}
+    assertEquals(1010F, persistedUser.getBalance());
+    assertEquals(persistedBet.getStatus(), BetStatus.WIN);
+  }
 
-	@Test
-	void givenPlacedBetAndFinishedMatch_processUserBetsOnMatch_userLostBet() {
-		betService.addBet(user, stake, 2L);
+  @Test
+  void givenPlacedBetAndFinishedMatch_processUserBetsOnMatch_userLostBet() {
+    betService.addBet(user, stake, 2L);
 
-		matchUpsertDto.getMatchState().setScore("7-5,7-4,7-3");
-		matchUpsertDto.getMatchState().setPointScore("40-0");
-		matchUpsertDto.setLive(false);
+    matchUpsertDto.getMatchState().setScore("7-5,7-4,7-3");
+    matchUpsertDto.getMatchState().setPointScore("40-0");
+    matchUpsertDto.setLive(false);
 
-		liveMatchesService.updateMatchAndStates(matchUpsertDto);
-		var persistedBet = betRepository.findById(1L).orElseThrow();
-		var persistedUser = userRepository.findById(1L).orElseThrow();
+    liveMatchesService.updateMatchAndStates(matchUpsertDto);
+    var persistedBet = betRepository.findById(1L).orElseThrow();
+    var persistedUser = userRepository.findById(1L).orElseThrow();
 
-		assertEquals(990F, persistedUser.getBalance());
-		assertEquals(persistedBet.getStatus(), BetStatus.LOSS);
-	}
+    assertEquals(990F, persistedUser.getBalance());
+    assertEquals(persistedBet.getStatus(), BetStatus.LOSS);
+  }
 
-	@Test
-	void givenPlacedBetAndFinishedMatchInvalidScore_processUserBetsOnMatch_userVoidedBet() {
-		betService.addBet(user, stake, 2L);
+  @Test
+  void givenPlacedBetAndFinishedMatchInvalidScore_processUserBetsOnMatch_userVoidedBet() {
+    betService.addBet(user, stake, 2L);
 
-		matchUpsertDto.getMatchState().setScore("7-5,7-4,7-7");
-		matchUpsertDto.getMatchState().setPointScore("40-0");
-		matchUpsertDto.setLive(false);
+    matchUpsertDto.getMatchState().setScore("7-5,7-4,7-7");
+    matchUpsertDto.getMatchState().setPointScore("40-0");
+    matchUpsertDto.setLive(false);
 
-		liveMatchesService.updateMatchAndStates(matchUpsertDto);
-		var persistedBet = betRepository.findById(1L).orElseThrow();
-		var persistedUser = userRepository.findById(1L).orElseThrow();
+    liveMatchesService.updateMatchAndStates(matchUpsertDto);
+    var persistedBet = betRepository.findById(1L).orElseThrow();
+    var persistedUser = userRepository.findById(1L).orElseThrow();
 
-		assertEquals(1000F, persistedUser.getBalance());
-		assertEquals(persistedBet.getStatus(), BetStatus.VOID);
-	}
+    assertEquals(1000F, persistedUser.getBalance());
+    assertEquals(persistedBet.getStatus(), BetStatus.VOID);
+  }
 }

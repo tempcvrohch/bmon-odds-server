@@ -1,35 +1,27 @@
+/* (C)2024 */
 package com.rohanc.bmonoddsserver.models.dto;
 
-import java.net.URI;
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.rohanc.bmonoddsserver.models.dto.LeagueDto;
-import com.rohanc.bmonoddsserver.models.dto.MatchStateDto;
-import com.rohanc.bmonoddsserver.models.dto.SportDto;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.io.Serializable;
-import java.time.OffsetDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
-import io.swagger.v3.oas.annotations.media.Schema;
-
-
+import java.io.Serializable;
+import java.time.OffsetDateTime;
 import java.util.*;
-import jakarta.annotation.Generated;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * MatchDto
  */
-
 @JsonTypeName("match-dto")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
+@Generated(
+    value = "org.openapitools.codegen.languages.SpringCodegen",
+    date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
 public class MatchDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -52,8 +44,7 @@ public class MatchDto implements Serializable {
 
   private MatchStateDto matchState;
 
-  @Valid
-  private List<@Valid MatchStateDto> matchStates;
+  @Valid private List<@Valid MatchStateDto> matchStates;
 
   public MatchDto() {
     super();
@@ -75,8 +66,8 @@ public class MatchDto implements Serializable {
   /**
    * Get id
    * @return id
-  */
-  @NotNull 
+   */
+  @NotNull
   @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public Long getId() {
@@ -95,8 +86,8 @@ public class MatchDto implements Serializable {
   /**
    * Get createdAt
    * @return createdAt
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "created_at", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("created_at")
   public OffsetDateTime getCreatedAt() {
@@ -115,8 +106,8 @@ public class MatchDto implements Serializable {
   /**
    * Get updatedAt
    * @return updatedAt
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "updated_at", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("updated_at")
   public OffsetDateTime getUpdatedAt() {
@@ -135,8 +126,8 @@ public class MatchDto implements Serializable {
   /**
    * Get name
    * @return name
-  */
-  @NotNull 
+   */
+  @NotNull
   @Schema(name = "name", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("name")
   public String getName() {
@@ -155,8 +146,7 @@ public class MatchDto implements Serializable {
   /**
    * Get live
    * @return live
-  */
-  
+   */
   @Schema(name = "live", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("live")
   public Boolean getLive() {
@@ -175,8 +165,8 @@ public class MatchDto implements Serializable {
   /**
    * Get league
    * @return league
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "league", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("league")
   public LeagueDto getLeague() {
@@ -195,8 +185,8 @@ public class MatchDto implements Serializable {
   /**
    * Get sport
    * @return sport
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "sport", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("sport")
   public SportDto getSport() {
@@ -215,8 +205,8 @@ public class MatchDto implements Serializable {
   /**
    * Get matchState
    * @return matchState
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "matchState", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("matchState")
   public MatchStateDto getMatchState() {
@@ -243,8 +233,8 @@ public class MatchDto implements Serializable {
   /**
    * Get matchStates
    * @return matchStates
-  */
-  @Valid 
+   */
+  @Valid
   @Schema(name = "matchStates", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("matchStates")
   public List<@Valid MatchStateDto> getMatchStates() {
@@ -264,20 +254,21 @@ public class MatchDto implements Serializable {
       return false;
     }
     MatchDto matchDto = (MatchDto) o;
-    return Objects.equals(this.id, matchDto.id) &&
-        Objects.equals(this.createdAt, matchDto.createdAt) &&
-        Objects.equals(this.updatedAt, matchDto.updatedAt) &&
-        Objects.equals(this.name, matchDto.name) &&
-        Objects.equals(this.live, matchDto.live) &&
-        Objects.equals(this.league, matchDto.league) &&
-        Objects.equals(this.sport, matchDto.sport) &&
-        Objects.equals(this.matchState, matchDto.matchState) &&
-        Objects.equals(this.matchStates, matchDto.matchStates);
+    return Objects.equals(this.id, matchDto.id)
+        && Objects.equals(this.createdAt, matchDto.createdAt)
+        && Objects.equals(this.updatedAt, matchDto.updatedAt)
+        && Objects.equals(this.name, matchDto.name)
+        && Objects.equals(this.live, matchDto.live)
+        && Objects.equals(this.league, matchDto.league)
+        && Objects.equals(this.sport, matchDto.sport)
+        && Objects.equals(this.matchState, matchDto.matchState)
+        && Objects.equals(this.matchStates, matchDto.matchStates);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, createdAt, updatedAt, name, live, league, sport, matchState, matchStates);
+    return Objects.hash(
+        id, createdAt, updatedAt, name, live, league, sport, matchState, matchStates);
   }
 
   @Override
@@ -308,4 +299,3 @@ public class MatchDto implements Serializable {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

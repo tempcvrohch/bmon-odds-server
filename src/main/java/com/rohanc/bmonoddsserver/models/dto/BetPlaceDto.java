@@ -1,28 +1,25 @@
+/* (C)2024 */
 package com.rohanc.bmonoddsserver.models.dto;
 
-import java.net.URI;
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.io.Serializable;
-import java.time.OffsetDateTime;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-
-import java.util.*;
 import jakarta.annotation.Generated;
+import jakarta.validation.constraints.*;
+import java.io.Serializable;
+import java.util.*;
+import java.util.Objects;
 
 /**
  * A request body of a wager placed by a user on a marketState.
  */
-
-@Schema(name = "bet-place-dto", description = "A request body of a wager placed by a user on a marketState.")
+@Schema(
+    name = "bet-place-dto",
+    description = "A request body of a wager placed by a user on a marketState.")
 @JsonTypeName("bet-place-dto")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
+@Generated(
+    value = "org.openapitools.codegen.languages.SpringCodegen",
+    date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
 public class BetPlaceDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -52,8 +49,9 @@ public class BetPlaceDto implements Serializable {
    * Get stake
    * minimum: 0
    * @return stake
-  */
-  @NotNull @DecimalMin("0") 
+   */
+  @NotNull
+  @DecimalMin("0")
   @Schema(name = "stake", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("stake")
   public Float getStake() {
@@ -72,8 +70,8 @@ public class BetPlaceDto implements Serializable {
   /**
    * Get marketStateId
    * @return marketStateId
-  */
-  @NotNull 
+   */
+  @NotNull
   @Schema(name = "marketStateId", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("marketStateId")
   public Long getMarketStateId() {
@@ -93,8 +91,8 @@ public class BetPlaceDto implements Serializable {
       return false;
     }
     BetPlaceDto betPlaceDto = (BetPlaceDto) o;
-    return Objects.equals(this.stake, betPlaceDto.stake) &&
-        Objects.equals(this.marketStateId, betPlaceDto.marketStateId);
+    return Objects.equals(this.stake, betPlaceDto.stake)
+        && Objects.equals(this.marketStateId, betPlaceDto.marketStateId);
   }
 
   @Override
@@ -123,4 +121,3 @@ public class BetPlaceDto implements Serializable {
     return o.toString().replace("\n", "\n    ");
   }
 }
-
