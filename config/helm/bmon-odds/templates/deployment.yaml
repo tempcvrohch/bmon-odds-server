@@ -23,30 +23,29 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- with .Values.imagePullSecrets }}
+      {{- $spec := .Values.specs.server }}
       imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- toYaml $spec.imagePullSecrets | nindent 8 }}
       serviceAccountName: {{ include "bmonodds.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml $spec.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ $spec.name }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+            {{- toYaml $spec.securityContext | nindent 12 }}
+          image: "{{ $spec.repository }}:{{ $spec.tag }}"
+          imagePullPolicy: {{ $spec.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: {{ $spec.containerPort }}
               protocol: TCP
           livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            {{- toYaml $spec.livenessProbe | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            {{- toYaml $spec.readinessProbe | nindent 12 }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
+            {{- toYaml $spec.resources | nindent 12 }}
+          {{- with $spec.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -54,7 +53,10 @@ spec:
             - name: POSTGRES_USER
               value: {{ .Values.global.postgresql.auth.username | quote }}
             - name: POSTGRES_PASS
-              value: {{ .Values.global.postgresql.auth.password | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.global.postgresql.auth.existingSecret | quote }}
+                  key: password
             - name: POSTGRES_DB
               value: {{ .Values.global.postgresql.auth.database | quote }}
             - name: POSTGRES_URL
@@ -69,19 +71,19 @@ spec:
               value: {{ .Values.bmonodds.server.spring.profilesActive | quote }}
             - name: SPRING_DEBUG
               value: {{ .Values.bmonodds.server.spring.debug | quote }}
-      {{- with .Values.volumes }}
+      {{- with $spec.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.nodeSelector }}
+      {{- with $spec.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- with $spec.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- with $spec.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}

@@ -1,14 +1,35 @@
 replicaCount: 1
 
-image:
-  repository: bmon-odds/server
-  pullPolicy: IfNotPresent
-  tag: latest
-  #tag: 1.0.2
-
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+specs:
+  server:
+    repository: bmon-odds/server
+    name: bmon-odds-server
+    pullPolicy: IfNotPresent
+    tag: latest
+    securityContext: {}
+    containerPort: 80
+    livenessProbe:
+      initialDelaySeconds: 30
+      httpGet:
+        path: /api/sports
+        port: 8080
+    readinessProbe:
+      initialDelaySeconds: 20
+      httpGet:
+        path: /api/sports
+        port: 8080
+    resources: {}
+    volumes: []
+    volumeMounts: []
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    imagePullSecrets: []
+    nameOverride: ""
+    fullnameOverride: ""
+    podAnnotations: {}
+    podLabels: {}
+    podSecurityContext: {}
 
 serviceAccount:
   create: true
@@ -16,17 +37,10 @@ serviceAccount:
   annotations: {}
   name: ""
 
-podAnnotations: {}
-podLabels: {}
-
-podSecurityContext: {}
-
-securityContext: {}
-
 service:
   name: backend-service
   type: ClusterIP
-  port: 80
+  port: 43
 
 # TODO: resolve duplicate nginx instances
 # TODO: rewrite the ingress.yaml
@@ -48,57 +62,32 @@ ingress:
           backend:
             service: "backend-service"
             port: 8080
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
-
-resources: {}
-
-livenessProbe:
-  initialDelaySeconds: 30
-  httpGet:
-    path: /api/sports
-    port: 8080
-readinessProbe:
-  initialDelaySeconds: 20
-  httpGet:
-    path: /api/sports
-    port: 8080
+  tls:
+    - hosts:
+      - bmon-odds.local
+      secretName: ingress-tls-certs
 
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 100
+  maxReplicas: 2
   targetCPUUtilizationPercentage: 80
-
-volumes: []
-
-volumeMounts: []
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
 
 #env
 postgresql:
   enabled: true
-  auth:
-    postgresPassword: POSTGRESPASSWORD_CHANGETHIS
   primary:
     name: NAME_CHANGETHIS
     initdb:
       scriptsConfigMap: "configmap-postgresql-init"
 
-# TODO: add existingSecret
+# TODO: figure out how to split the postgressql-secret into 2, one for global without the su password and one internally with.
 global:
   postgresql:
     auth:
       username: USERNAME_CHANGETHIS
-      password: PASSWORD_CHANGETHIS
       database: DATABASE_CHANGETHIS
+      existingSecret: postgresql-secrets
       url: URL_CHANGETHIS
     service:
       ports:

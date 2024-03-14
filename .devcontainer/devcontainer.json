@@ -3,6 +3,11 @@
   "service": "bmon-server",
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
+	// https://github.com/microsoft/vscode-remote-release/issues/3545
+	// Will start working in 1.86 
+  "build": {
+    "options": ["--add-host=host.docker.internal:host-gateway"]
+  },
   "customizations": {
     "vscode": {
       "settings": {

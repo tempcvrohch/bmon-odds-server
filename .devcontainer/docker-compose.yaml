@@ -21,7 +21,8 @@ services:
       - "bmon-workspace-bin:/workspace/bin"
       - type: tmpfs
         target: /tmp
-
+      - "tmpfs-1g-img-repo:/tmp/tmpfs-1g-img-repo"
+      
     # Overrides default command so things don't shut down after the process ends.
     command: /bin/sh -c "while sleep 1000; do :; done"
     networks:
@@ -35,6 +36,8 @@ volumes:
   "bmon-workspace-bin":
     driver_opts:
       type: tmpfs
+  "tmpfs-1g-img-repo":
+    external: true
 
 networks:
   main:
