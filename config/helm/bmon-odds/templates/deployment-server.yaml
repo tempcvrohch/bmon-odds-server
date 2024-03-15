@@ -1,7 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
+{{- $spec := .Values.specs.server }}
 metadata:
-  name: {{ include "bmonodds.fullname" . }}
+  name: {{ $spec.name }}
   labels:
     {{- include "bmonodds.labels" . | nindent 4 }}
 spec:
@@ -19,16 +20,13 @@ spec:
       {{- end }}
       labels:
         {{- include "bmonodds.labels" . | nindent 8 }}
-        {{- with .Values.podLabels }}
+        {{- with $spec.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- $spec := .Values.specs.server }}
       imagePullSecrets:
         {{- toYaml $spec.imagePullSecrets | nindent 8 }}
       serviceAccountName: {{ include "bmonodds.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml $spec.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ $spec.name }}
           securityContext:
@@ -43,8 +41,6 @@ spec:
             {{- toYaml $spec.livenessProbe | nindent 12 }}
           readinessProbe:
             {{- toYaml $spec.readinessProbe | nindent 12 }}
-          resources:
-            {{- toYaml $spec.resources | nindent 12 }}
           {{- with $spec.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
@@ -73,17 +69,5 @@ spec:
               value: {{ .Values.bmonodds.server.spring.debug | quote }}
       {{- with $spec.volumes }}
       volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with $spec.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with $spec.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with $spec.tolerations }}
-      tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}

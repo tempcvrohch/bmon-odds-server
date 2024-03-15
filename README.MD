@@ -56,23 +56,28 @@ Finally:
 	--set "global.postgresql.auth.url=jdbc:postgresql://bmon-odds-postgresql:5432" \
 	--set "bmonodds.server.schema.app=bmon_schema" \
 	--set "bmonodds.server.schema.flyway=flyway_schema" \
+	--set "bmonodds.gen.apiPrefix=/gen/api" \
+	--set "bmonodds.gen.maxLiveGames=1" \
+	--set "bmonodds.gen.dotnet.httpPorts=8081" \
 	(for prod)
-	--set "bmonodds.server.spring.profilesActive=prod"
+	--set "bmonodds.server.spring.profilesActive=prod" \
+	--set "bmonodds.gen.dotnet.enviroment=Production"
 	(or for debugging)
 	--debug \
 	--set "bmonodds.server.spring.profilesActive=dev" \
-	--set "bmonodds.server.spring.debug=true"
+	--set "bmonodds.server.spring.debug=true" \
+	--set "bmonodds.gen.dotnet.enviroment=Development"
 	```
 2. `echo "$(minikube ip) bmon-odds.local" | sudo tee -a /etc/hosts`
 3. `curl --insecure bmon-odds.local/api/sports`
 
 ## Todo's
 - [ ] Add frontend/gen images
-- [	] Add secrets
+- [x] Add secrets
 - [ ] Add TLS/Certbot
 - [ ] Split front and backend ingress
 - [ ] Add Frontend project
-- [ ] Add oddsgen backend
+- [x] Add oddsgen backend
 - [ ] Add Github CI/CD 
 - [ ] Split up to dev/staging/prod
 - [ ] Setup review env's on PR's

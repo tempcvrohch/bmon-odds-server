@@ -1,13 +1,19 @@
 replicaCount: 1
 
+# TODO: fix dupe ports
 specs:
   server:
     repository: bmon-odds/server
     name: bmon-odds-server
     pullPolicy: IfNotPresent
     tag: latest
-    securityContext: {}
-    containerPort: 80
+    podLabels:
+      pod: server
+    containerPort: 8080
+    service:
+      type: ClusterIP
+      selectorLabels: 
+        pod: server
     livenessProbe:
       initialDelaySeconds: 30
       httpGet:
@@ -18,18 +24,32 @@ specs:
       httpGet:
         path: /api/sports
         port: 8080
-    resources: {}
     volumes: []
     volumeMounts: []
-    nodeSelector: {}
-    tolerations: []
-    affinity: {}
-    imagePullSecrets: []
-    nameOverride: ""
-    fullnameOverride: ""
-    podAnnotations: {}
-    podLabels: {}
-    podSecurityContext: {}
+  gen:
+    repository: bmon-odds/gen
+    name: bmon-odds-gen
+    pullPolicy: IfNotPresent
+    tag: latest
+    podLabels: 
+      pod: gen
+    containerPort: 8081
+    service:
+      type: ClusterIP
+      selectorLabels: 
+        pod: gen
+    livenessProbe:
+      initialDelaySeconds: 30
+      httpGet:
+        path: /gen/api/health
+        port: 8081
+    readinessProbe:
+      initialDelaySeconds: 20
+      httpGet:
+        path: /gen/api/health
+        port: 8081
+    volumes: []
+    volumeMounts: []
 
 serviceAccount:
   create: true
@@ -57,11 +77,16 @@ ingress:
   hosts:
     - host: bmon-odds.local
       paths:
-        - path: "/"
+        - path: "/api"
           pathType: "Prefix"
           backend:
             service: "backend-service"
             port: 8080
+        - path: "/gen/api"
+          pathType: "Prefix"
+          backend:
+            service: "gen-service"
+            port: 8081
   tls:
     - hosts:
       - bmon-odds.local
@@ -93,6 +118,7 @@ global:
       ports:
         postgresql: 5432
 
+# TODO: do some proper port referencing
 bmonodds:
   server:
     spring:
@@ -101,3 +127,10 @@ bmonodds:
     schema:
       app: APP_SCHEMA_CHANGETHIS
       flyway: FLYWAY_SCHEMA_CHANGETHIS
+  gen:
+    apiPrefix: API_PREFIX_CHANGETHIS
+    serverBackendUrl: http://bmon-odds-server:8080/api
+    maxLiveGames: MAX_LIVE_GAMES_CHANGETHIS
+    dotnet:
+      enviroment: ENVIROMENT_CHANGETHIS
+      httpPorts: 8081
