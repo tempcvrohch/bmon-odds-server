@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+{{- $spec := .Values.specs.frontend }}
+metadata:
+  name: {{ $spec.name }}
+  labels:
+    {{- include "bmonodds.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "bmonodds.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "bmonodds.labels" . | nindent 8 }}
+        {{- with $spec.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      imagePullSecrets:
+        {{- toYaml $spec.imagePullSecrets | nindent 8 }}
+      serviceAccountName: {{ include "bmonodds.serviceAccountName" . }}
+      containers:
+        - name: {{ $spec.name }}
+          securityContext:
+            {{- toYaml $spec.securityContext | nindent 12 }}
+          image: "{{ $spec.repository }}:{{ $spec.tag }}"
+          imagePullPolicy: {{ $spec.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ $spec.containerPort }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml $spec.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml $spec.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml $spec.resources | nindent 12 }}
+          {{- with $spec.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          env:
+            - name: VITE_BMON_BACKEND_URL
+              value: {{ .Values.bmonodds.frontend.vite.serverBackendUrl | quote }}
+      {{- with $spec.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

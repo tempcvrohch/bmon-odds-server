@@ -39,15 +39,39 @@ specs:
       selectorLabels: 
         pod: gen
     livenessProbe:
-      initialDelaySeconds: 30
+      initialDelaySeconds: 5
       httpGet:
         path: /gen/api/health
         port: 8081
     readinessProbe:
-      initialDelaySeconds: 20
+      initialDelaySeconds: 5
       httpGet:
         path: /gen/api/health
         port: 8081
+    volumes: []
+    volumeMounts: []
+  frontend:
+    repository: bmon-odds/frontend
+    name: bmon-odds-frontend
+    pullPolicy: IfNotPresent
+    tag: latest
+    podLabels: 
+      pod: frontend
+    containerPort: 3000
+    service:
+      type: ClusterIP
+      selectorLabels: 
+        pod: frontend
+    livenessProbe:
+      initialDelaySeconds: 5
+      httpGet:
+        path: /index.html
+        port: 3000
+    readinessProbe:
+      initialDelaySeconds: 5
+      httpGet:
+        path: /index.html
+        port: 3000
     volumes: []
     volumeMounts: []
 
@@ -56,11 +80,6 @@ serviceAccount:
   automount: true
   annotations: {}
   name: ""
-
-service:
-  name: backend-service
-  type: ClusterIP
-  port: 43
 
 # TODO: resolve duplicate nginx instances
 # TODO: rewrite the ingress.yaml
@@ -74,19 +93,31 @@ ingress:
     #nginx.ingress.kubernetes.io/hsts-include-subdomains: 'true'
     #nginx.ingress.kubernetes.io/hsts-max-age: '31536000'
 
+  service:
+    name: ingress-service
+    type: ClusterIP
+    port: 443
+
   hosts:
     - host: bmon-odds.local
       paths:
-        - path: "/api"
-          pathType: "Prefix"
-          backend:
-            service: "backend-service"
-            port: 8080
+        # TODO: remove genapi from ingress when everything is set up
+        # TODO: add a suffix -service to all service names
         - path: "/gen/api"
           pathType: "Prefix"
           backend:
-            service: "gen-service"
+            service: "bmon-odds-gen"
             port: 8081
+        - path: "/api"
+          pathType: "Prefix"
+          backend:
+            service: "bmon-odds-server"
+            port: 8080
+        - path: "/"
+          pathType: "Prefix"
+          backend:
+            service: "bmon-odds-frontend"
+            port: 3000
   tls:
     - hosts:
       - bmon-odds.local
@@ -134,3 +165,6 @@ bmonodds:
     dotnet:
       enviroment: ENVIROMENT_CHANGETHIS
       httpPorts: 8081
+  frontend:
+    vite:
+      serverBackendUrl: http://bmon-odds-server:8080/api

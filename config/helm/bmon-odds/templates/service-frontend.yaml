@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+{{- $spec := .Values.specs.frontend }}
+metadata:
+  name: {{ $spec.name }}
+  labels:
+    {{- include "bmonodds.labels" . | nindent 4 }}
+spec:
+  type: {{ $spec.service.type }}
+  ports:
+    - port: {{ $spec.containerPort }}
+      targetPort: {{ $spec.containerPort }}
+      protocol: TCP
+      name: {{ $spec.name }}
+  selector:
+    {{- toYaml $spec.service.selectorLabels | nindent 4 }}

@@ -5,14 +5,14 @@
 
 1. `find . -type f -name '*.sample' -exec bash -c 'cp "$1" "$(echo "$1" | sed "s/\.sample//")"' _ {} \;`
 2. `cd nginx && chmod +x ./certs.sh && ./certs.sh && cd ..`
-3. `Devcontainers: Rebuild and Reopen in Container` in Visual studio code.
+3. `Devcontainers: Rebuild and Reopen in Container` in your favorite editor that supports .devcontainers.
 
 ## Steps for manually running prod
 
 1. `docker build -t bmon-odds-server_bmon-server:latest ./.devcontainer/Dockerfile` if you haven't created a devcontainer yet. #needed?
 2. `minikube start --insecure-registry 192.168.49.1:5000` insecure registry is only needed if building outside minikube
 3. `minikube addons enable ingress`
-4. `nohup kubectl port-forward --pod-running-timeout=24h -n ingress-nginx service/ingress-nginx-controller :80 &`
+4. `nohup kubectl port-forward --pod-running-timeout=24h -n ingress-nginx service/ingress-nginx-controller 4333:443 &`
 
 ### Steps for creating/updating images in minikube 
 :warning: These steps are tedious till .devcontainers has support for passing `ssh-agent` through which can then be handled by helm, choose 1 of the following 3:
@@ -46,6 +46,8 @@ Otherwise, set up a docker repository:
 2. `kubectl create secret generic ingress-tls-certs --from-file=./nginx/certs/nginx-cert.crt --from-file=./nginx/certs/nginx-cert.key`
 3. `kubectl create secret generic postgresql-secrets --from-literal='postgres-password=somesecurepassword' --from-literal='password=somesecurepassword1'`
 
+### Running Helm
+
 Finally:
 1.  ```
 	helm install bmon-odds ./config/helm/bmon-odds \
@@ -69,14 +71,17 @@ Finally:
 	--set "bmonodds.gen.dotnet.enviroment=Development"
 	```
 2. `echo "$(minikube ip) bmon-odds.local" | sudo tee -a /etc/hosts`
-3. `curl --insecure bmon-odds.local/api/sports`
+3. `curl --insecure bmon-odds.local/index.html` (should return a html body)
+4. `curl --insecure bmon-odds.local/api/sports` (should return a json array)
+5. `curl --insecure bmon-odds.local/gen/api/sports` (should return a iso timestamp)
+6. If you're working in `.devcontainers` and want the service to be visible on windows make sure to add an entry in your hosts file and forward the port in vscode.
 
 ## Todo's
-- [ ] Add frontend/gen images
+- [x] Add frontend/gen images
 - [x] Add secrets
 - [ ] Add TLS/Certbot
 - [ ] Split front and backend ingress
-- [ ] Add Frontend project
+- [x] Add Frontend project
 - [x] Add oddsgen backend
 - [ ] Add Github CI/CD 
 - [ ] Split up to dev/staging/prod

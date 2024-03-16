@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "bmonodds.fullname" . }}:{{ .Values.service.port }}/api/sports']
+      args: ['{{ include "bmonodds.fullname" . }}:{{ .Values.ingress.service.port }}/api/sports']
   restartPolicy: Never

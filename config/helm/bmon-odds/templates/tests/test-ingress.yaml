@@ -1,3 +1,4 @@
+# TODO: fix these tests
 # args: ['include "bmonodds.protocol" $ : .Values.ingress.host /api/sports'
 {{- if .Values.ingress.enabled -}}
 apiVersion: v1
