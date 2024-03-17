@@ -25,7 +25,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
+    date = "2024-03-17T12:07:05.351636620Z[Etc/UTC]")
 @Validated
 @Tag(name = "matches", description = "the matches API")
 @RequestMapping("${openapi.betMonitorForGeneratingMatchesAndOdds.base-path:/v2}")
@@ -39,7 +39,7 @@ public interface MatchesApi {
    * GET /matches : Get all matches or matches between dates.
    *
    * @param from Starting date inclusive. (optional)
-   * @param to   Ending date exclusive. (optional)
+   * @param to Ending date exclusive. (optional)
    * @return a list of matches. (status code 200)
    */
   @Operation(
@@ -58,7 +58,7 @@ public interface MatchesApi {
       })
   @RequestMapping(
       method = RequestMethod.GET,
-      value = "/api/matches",
+      value = "/matches",
       produces = {"application/json"})
   @ResponseStatus(HttpStatus.OK)
   default List<MatchDto> getMatches(
@@ -108,7 +108,7 @@ public interface MatchesApi {
       })
   @RequestMapping(
       method = RequestMethod.GET,
-      value = "/api/matches/recent",
+      value = "/matches/recent",
       produces = {"application/json"})
   @ResponseStatus(HttpStatus.OK)
   default List<MatchDto> getRecentMatches() throws Exception {

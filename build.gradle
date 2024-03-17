@@ -34,7 +34,7 @@ configurations {
 	}
 }
 
-// TODO: fix the tag 
+// TODO: fix the tag
 tasks.named("bootBuildImage") {
 	imageName = "bmon-odds/server:1.0.3"
 }
@@ -101,7 +101,10 @@ spotless {
 
 	java {
 		googleJavaFormat('1.19.2').skipJavadocFormatting()
+		targetExclude("**/build/")
+		importOrder()
 		removeUnusedImports()
+		formatAnnotations()
 		licenseHeader '/* (C)$YEAR */'
 	}
 }

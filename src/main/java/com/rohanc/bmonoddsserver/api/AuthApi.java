@@ -5,7 +5,6 @@ import com.rohanc.bmonoddsserver.models.dto.UserDto;
 import com.rohanc.bmonoddsserver.models.dto.UserRegisterDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,7 +21,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
+    date = "2024-03-17T12:07:05.351636620Z[Etc/UTC]")
 @Validated
 @Tag(name = "user", description = "A registered user")
 @RequestMapping("${openapi.betMonitorForGeneratingMatchesAndOdds.base-path:/v2}")
@@ -57,7 +56,7 @@ public interface AuthApi {
       })
   @RequestMapping(
       method = RequestMethod.GET,
-      value = "/api/auth/session",
+      value = "/auth/session",
       produces = {"application/json"})
   @ResponseStatus(HttpStatus.OK)
   default UserDto getUserSession() throws Exception {
@@ -80,8 +79,8 @@ public interface AuthApi {
   /**
    * POST /auth/login : Logs the user in
    *
-   * @param username (optional)
-   * @param password (optional)
+   * @param username  (optional)
+   * @param password  (optional)
    * @return
    */
   @Operation(
@@ -91,7 +90,7 @@ public interface AuthApi {
       responses = {})
   @RequestMapping(
       method = RequestMethod.POST,
-      value = "/api/auth/login",
+      value = "/auth/login",
       consumes = {"application/x-www-form-urlencoded"})
   @ResponseStatus(HttpStatus.OK)
   default void login(
@@ -108,10 +107,26 @@ public interface AuthApi {
   }
 
   /**
+   * POST /auth/logout : Logs the user out
+   *
+   * @return
+   */
+  @Operation(
+      operationId = "logout",
+      summary = "Logs the user out",
+      tags = {"user", "auth"},
+      responses = {})
+  @RequestMapping(method = RequestMethod.POST, value = "/auth/logout")
+  @ResponseStatus(HttpStatus.OK)
+  default void logout() throws Exception {
+
+    throw new IllegalArgumentException("Not implemented");
+  }
+
+  /**
    * POST /auth/register : register a new user.
    *
-   * @param X_XSRF_TOKEN    (required)
-   * @param userRegisterDto (required)
+   * @param userRegisterDto  (required)
    * @return a user is logged in and was returned. (status code 200)
    *         or the username/password has invalid length. (status code 400)
    *         or username was taken (status code 409)
@@ -136,19 +151,11 @@ public interface AuthApi {
       })
   @RequestMapping(
       method = RequestMethod.POST,
-      value = "/api/auth/register",
+      value = "/auth/register",
       produces = {"application/json"},
       consumes = {"application/json"})
   @ResponseStatus(HttpStatus.OK)
   default UserDto register(
-      @NotNull
-          @Parameter(
-              name = "X-XSRF-TOKEN",
-              description = "",
-              required = true,
-              in = ParameterIn.HEADER)
-          @RequestHeader(value = "X-XSRF-TOKEN", required = true)
-          String X_XSRF_TOKEN,
       @Parameter(name = "UserRegisterDto", description = "", required = true) @Valid @RequestBody
           UserRegisterDto userRegisterDto)
       throws Exception {

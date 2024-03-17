@@ -19,7 +19,7 @@ import java.util.Objects;
 @JsonTypeName("match_upsert_dto_matchState")
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
+    date = "2024-03-17T12:07:05.351636620Z[Etc/UTC]")
 public class MatchUpsertDtoMatchState implements Serializable {
 
   private static final long serialVersionUID = 1L;

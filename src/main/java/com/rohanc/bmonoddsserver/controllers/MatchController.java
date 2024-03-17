@@ -8,7 +8,6 @@ import com.rohanc.bmonoddsserver.models.dto.MatchUpsertDto;
 import com.rohanc.bmonoddsserver.services.LiveMatchesService;
 import com.rohanc.bmonoddsserver.services.MatchService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,15 +30,12 @@ public class MatchController implements MatchApi {
   }
 
   @Override
-  public MatchDto createMatch(@NotNull String X_XSRF_TOKEN, @Valid MatchUpsertDto matchUpsertDto)
-      throws Exception {
+  public MatchDto createMatch(@Valid MatchUpsertDto matchUpsertDto) throws Exception {
     return liveMatchesService.createMatch(matchUpsertDto);
   }
 
   @Override
-  public void updateMatchAndStates(
-      @NotNull String X_XSRF_TOKEN, Long id, @Valid MatchUpsertDto matchUpsertDto)
-      throws Exception {
+  public void updateMatchAndStates(Long id, @Valid MatchUpsertDto matchUpsertDto) throws Exception {
     liveMatchesService.updateMatchAndStates(matchUpsertDto);
   }
 }

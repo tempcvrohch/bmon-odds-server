@@ -22,7 +22,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
+    date = "2024-03-17T12:07:05.351636620Z[Etc/UTC]")
 @Validated
 @Tag(name = "bet", description = "the bet API")
 @RequestMapping("${openapi.betMonitorForGeneratingMatchesAndOdds.base-path:/v2}")
@@ -35,13 +35,10 @@ public interface BetApi {
   /**
    * POST /bet/place/{marketStateId} : Place a wager.
    *
-   * @param X_XSRF_TOKEN  (required)
    * @param marketStateId Id of the market state to place the bet on. (required)
-   * @param betPlaceDto   (required)
-   * @return A bet was successfully placed and balance was substracted. (status
-   *         code 200)
-   *         or The bet was already placed or insufficient funds or stake out of
-   *         bounds or unknown market. (status code 400)
+   * @param betPlaceDto  (required)
+   * @return A bet was successfully placed and balance was substracted. (status code 200)
+   *         or The bet was already placed or insufficient funds or stake out of bounds or unknown market. (status code 400)
    */
   @Operation(
       operationId = "placeBet",
@@ -63,19 +60,11 @@ public interface BetApi {
       })
   @RequestMapping(
       method = RequestMethod.POST,
-      value = "/api/bet/place/{marketStateId}",
+      value = "/bet/place/{marketStateId}",
       produces = {"application/json"},
       consumes = {"application/json"})
   @ResponseStatus(HttpStatus.OK)
   default BetDto placeBet(
-      @NotNull
-          @Parameter(
-              name = "X-XSRF-TOKEN",
-              description = "",
-              required = true,
-              in = ParameterIn.HEADER)
-          @RequestHeader(value = "X-XSRF-TOKEN", required = true)
-          String X_XSRF_TOKEN,
       @Parameter(
               name = "marketStateId",
               description = "Id of the market state to place the bet on.",

@@ -20,7 +20,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
+    date = "2024-03-17T12:07:05.351636620Z[Etc/UTC]")
 @Validated
 @Tag(name = "leagues", description = "the leagues API")
 @RequestMapping("${openapi.betMonitorForGeneratingMatchesAndOdds.base-path:/v2}")
@@ -51,7 +51,7 @@ public interface LeaguesApi {
       })
   @RequestMapping(
       method = RequestMethod.GET,
-      value = "/api/leagues",
+      value = "/leagues",
       produces = {"application/json"})
   @ResponseStatus(HttpStatus.OK)
   default List<LeagueDto> getAllLeagues() throws Exception {

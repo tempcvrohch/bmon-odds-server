@@ -25,7 +25,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2024-02-23T11:29:00.797394723Z[Etc/UTC]")
+    date = "2024-03-17T12:07:05.351636620Z[Etc/UTC]")
 @Validated
 @Tag(name = "match", description = "the match API")
 @RequestMapping("${openapi.betMonitorForGeneratingMatchesAndOdds.base-path:/v2}")
@@ -38,10 +38,8 @@ public interface MatchApi {
   /**
    * POST /match : Create a new match
    *
-   * @param X_XSRF_TOKEN   (required)
-   * @param matchUpsertDto (required)
-   * @return A match, matchState and marketStates were successfully created.
-   *         (status code 200)
+   * @param matchUpsertDto  (required)
+   * @return A match, matchState and marketStates were successfully created. (status code 200)
    */
   @Operation(
       operationId = "createMatch",
@@ -59,19 +57,11 @@ public interface MatchApi {
       })
   @RequestMapping(
       method = RequestMethod.POST,
-      value = "/api/match",
+      value = "/match",
       produces = {"application/json"},
       consumes = {"application/json"})
   @ResponseStatus(HttpStatus.OK)
   default MatchDto createMatch(
-      @NotNull
-          @Parameter(
-              name = "X-XSRF-TOKEN",
-              description = "",
-              required = true,
-              in = ParameterIn.HEADER)
-          @RequestHeader(value = "X-XSRF-TOKEN", required = true)
-          String X_XSRF_TOKEN,
       @Parameter(name = "MatchUpsertDto", description = "", required = true) @Valid @RequestBody
           MatchUpsertDto matchUpsertDto)
       throws Exception {
@@ -112,7 +102,7 @@ public interface MatchApi {
       })
   @RequestMapping(
       method = RequestMethod.GET,
-      value = "/api/match/{id}/markets/latest",
+      value = "/match/{id}/markets/latest",
       produces = {"application/json"})
   @ResponseStatus(HttpStatus.OK)
   default List<MarketStateDto> getLatestMarketsByMatchId(
@@ -160,7 +150,7 @@ public interface MatchApi {
       })
   @RequestMapping(
       method = RequestMethod.GET,
-      value = "/api/match/{id}",
+      value = "/match/{id}",
       produces = {"application/json"})
   @ResponseStatus(HttpStatus.OK)
   default MatchDto getMatchById(
@@ -190,11 +180,9 @@ public interface MatchApi {
   /**
    * PUT /match/{id} : Update a live match with a new matchState
    *
-   * @param X_XSRF_TOKEN   (required)
-   * @param id             Id of match to update. (required)
-   * @param matchUpsertDto (required)
-   * @return The match was updated and new matchstate and marketstates inserted.
-   *         (status code 200)
+   * @param id Id of match to update. (required)
+   * @param matchUpsertDto  (required)
+   * @return The match was updated and new matchstate and marketstates inserted. (status code 200)
    */
   @Operation(
       operationId = "updateMatchAndStates",
@@ -207,18 +195,10 @@ public interface MatchApi {
       })
   @RequestMapping(
       method = RequestMethod.PUT,
-      value = "/api/match/{id}",
+      value = "/match/{id}",
       consumes = {"application/json"})
   @ResponseStatus(HttpStatus.OK)
   default void updateMatchAndStates(
-      @NotNull
-          @Parameter(
-              name = "X-XSRF-TOKEN",
-              description = "",
-              required = true,
-              in = ParameterIn.HEADER)
-          @RequestHeader(value = "X-XSRF-TOKEN", required = true)
-          String X_XSRF_TOKEN,
       @Parameter(
               name = "id",
               description = "Id of match to update.",
