@@ -1,5 +1,6 @@
 #  server.servlet.session.cookie.secure: true
 #  server.session.cookie.secure: true
+server.servlet.context-path: /api
 
 spring:
   main.lazy-initialization: true
