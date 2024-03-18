@@ -12,7 +12,7 @@
 1. `docker build -t bmon-odds-server_bmon-server:latest ./.devcontainer/Dockerfile` if you haven't created a devcontainer yet. #needed?
 2. `minikube start --insecure-registry 192.168.49.1:5000` insecure registry is only needed if building outside minikube
 3. `minikube addons enable ingress`
-4. `nohup kubectl port-forward --pod-running-timeout=24h -n ingress-nginx service/ingress-nginx-controller 4333:443 &`
+4. `nohup kubectl port-forward --pod-running-timeout=24h -n ingress-nginx service/ingress-nginx-controller 4433:443 &`
 
 ### Steps for creating/updating images in minikube 
 :warning: These steps are tedious till .devcontainers has support for passing `ssh-agent` through which can then be handled by helm, choose 1 of the following 3:
