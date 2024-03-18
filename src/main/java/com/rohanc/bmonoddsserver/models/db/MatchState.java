@@ -15,16 +15,13 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor
 @Table(name = "match_states")
 public class MatchState extends BaseEntity {
-  @NonNull
-  @Column(nullable = false)
+  @NonNull @Column(nullable = false)
   private String setScore;
 
-  @NonNull
-  @Column(nullable = false)
+  @NonNull @Column(nullable = false)
   private String pointScore;
 
-  @NonNull
-  @Column(nullable = false)
+  @NonNull @Column(nullable = false)
   private Integer servingIndex;
 
   @ManyToOne()

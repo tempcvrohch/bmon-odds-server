@@ -62,8 +62,7 @@ public class MatchStateDto implements Serializable {
    * Get id
    * @return id
    */
-  @NotNull
-  @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public Long getId() {
     return id;

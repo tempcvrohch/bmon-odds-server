@@ -63,8 +63,7 @@ public class PlayerDto implements Serializable {
    * Get id
    * @return id
    */
-  @NotNull
-  @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public Long getId() {
     return id;
@@ -123,8 +122,7 @@ public class PlayerDto implements Serializable {
    * Get firstname
    * @return firstname
    */
-  @NotNull
-  @Schema(name = "firstname", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Schema(name = "firstname", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("firstname")
   public String getFirstname() {
     return firstname;
@@ -143,8 +141,7 @@ public class PlayerDto implements Serializable {
    * Get lastname
    * @return lastname
    */
-  @NotNull
-  @Schema(name = "lastname", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Schema(name = "lastname", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("lastname")
   public String getLastname() {
     return lastname;
@@ -182,8 +179,7 @@ public class PlayerDto implements Serializable {
    * Get countryCode
    * @return countryCode
    */
-  @NotNull
-  @Schema(name = "countryCode", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Schema(name = "countryCode", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("countryCode")
   public String getCountryCode() {
     return countryCode;

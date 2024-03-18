@@ -18,8 +18,7 @@ public class MarketState extends BaseEntity {
   @Column(nullable = false)
   private boolean suspended;
 
-  @NonNull
-  @Column(nullable = false)
+  @NonNull @Column(nullable = false)
   private Float odd;
 
   @Column(nullable = false)

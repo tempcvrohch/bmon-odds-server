@@ -15,17 +15,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class Bet extends BaseEntity {
-  @NonNull
-  @Column(nullable = false)
+  @NonNull @Column(nullable = false)
   @Enumerated(EnumType.STRING)
   private BetStatus status;
 
-  @NonNull
-  @Column(nullable = false)
+  @NonNull @Column(nullable = false)
   private Float stake;
 
-  @NonNull
-  @Column(nullable = false)
+  @NonNull @Column(nullable = false)
   private Float toReturn;
 
   @ManyToOne()

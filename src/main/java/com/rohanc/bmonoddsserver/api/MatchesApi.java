@@ -39,7 +39,7 @@ public interface MatchesApi {
    * GET /matches : Get all matches or matches between dates.
    *
    * @param from Starting date inclusive. (optional)
-   * @param to Ending date exclusive. (optional)
+   * @param to   Ending date exclusive. (optional)
    * @return a list of matches. (status code 200)
    */
   @Operation(

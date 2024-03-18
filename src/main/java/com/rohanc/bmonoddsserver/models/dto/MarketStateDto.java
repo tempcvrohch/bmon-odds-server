@@ -64,8 +64,7 @@ public class MarketStateDto implements Serializable {
    * Get id
    * @return id
    */
-  @NotNull
-  @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public Long getId() {
     return id;
@@ -126,8 +125,7 @@ public class MarketStateDto implements Serializable {
    * maximum: 100
    * @return odd
    */
-  @NotNull
-  @DecimalMin("1")
+  @NotNull @DecimalMin("1")
   @DecimalMax("100")
   @Schema(name = "odd", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("odd")
@@ -148,8 +146,7 @@ public class MarketStateDto implements Serializable {
    * Get suspended
    * @return suspended
    */
-  @NotNull
-  @Schema(name = "suspended", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Schema(name = "suspended", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("suspended")
   public Boolean getSuspended() {
     return suspended;

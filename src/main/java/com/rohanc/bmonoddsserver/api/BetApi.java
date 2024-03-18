@@ -36,9 +36,11 @@ public interface BetApi {
    * POST /bet/place/{marketStateId} : Place a wager.
    *
    * @param marketStateId Id of the market state to place the bet on. (required)
-   * @param betPlaceDto  (required)
-   * @return A bet was successfully placed and balance was substracted. (status code 200)
-   *         or The bet was already placed or insufficient funds or stake out of bounds or unknown market. (status code 400)
+   * @param betPlaceDto   (required)
+   * @return A bet was successfully placed and balance was substracted. (status
+   *         code 200)
+   *         or The bet was already placed or insufficient funds or stake out of
+   *         bounds or unknown market. (status code 400)
    */
   @Operation(
       operationId = "placeBet",

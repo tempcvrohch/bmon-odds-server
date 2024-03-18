@@ -38,8 +38,9 @@ public interface MatchApi {
   /**
    * POST /match : Create a new match
    *
-   * @param matchUpsertDto  (required)
-   * @return A match, matchState and marketStates were successfully created. (status code 200)
+   * @param matchUpsertDto (required)
+   * @return A match, matchState and marketStates were successfully created.
+   *         (status code 200)
    */
   @Operation(
       operationId = "createMatch",
@@ -180,9 +181,10 @@ public interface MatchApi {
   /**
    * PUT /match/{id} : Update a live match with a new matchState
    *
-   * @param id Id of match to update. (required)
-   * @param matchUpsertDto  (required)
-   * @return The match was updated and new matchstate and marketstates inserted. (status code 200)
+   * @param id             Id of match to update. (required)
+   * @param matchUpsertDto (required)
+   * @return The match was updated and new matchstate and marketstates inserted.
+   *         (status code 200)
    */
   @Operation(
       operationId = "updateMatchAndStates",

@@ -17,19 +17,15 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class Player extends BaseEntity {
-  @NonNull
-  @Column(nullable = false)
+  @NonNull @Column(nullable = false)
   private String firstname;
 
-  @NonNull
-  @Column(nullable = false)
+  @NonNull @Column(nullable = false)
   private String lastname;
 
-  @NonNull
-  @Column(nullable = false)
+  @NonNull @Column(nullable = false)
   private String slug;
 
-  @NonNull
-  @Column(nullable = false)
+  @NonNull @Column(nullable = false)
   private String countryCode;
 }

@@ -55,8 +55,7 @@ public class SportDto implements Serializable {
    * Get id
    * @return id
    */
-  @NotNull
-  @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public Long getId() {
     return id;
@@ -115,8 +114,7 @@ public class SportDto implements Serializable {
    * Get name
    * @return name
    */
-  @NotNull
-  @Schema(name = "name", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Schema(name = "name", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("name")
   public String getName() {
     return name;

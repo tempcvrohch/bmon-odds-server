@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class Sport extends BaseEntity {
-  @NonNull
-  @Column(nullable = false)
+  @NonNull @Column(nullable = false)
   private String name;
 }

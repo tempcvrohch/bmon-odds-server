@@ -15,12 +15,10 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor
 @Table(name = "matches")
 public class Match extends BaseEntity {
-  @NonNull
-  @Column(nullable = false)
+  @NonNull @Column(nullable = false)
   private String name;
 
-  @NonNull
-  @Column(nullable = false)
+  @NonNull @Column(nullable = false)
   private Boolean live;
 
   @OneToOne()

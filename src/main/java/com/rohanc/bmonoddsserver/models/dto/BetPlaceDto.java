@@ -50,8 +50,7 @@ public class BetPlaceDto implements Serializable {
    * minimum: 0
    * @return stake
    */
-  @NotNull
-  @DecimalMin("0")
+  @NotNull @DecimalMin("0")
   @Schema(name = "stake", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("stake")
   public Float getStake() {
@@ -71,8 +70,7 @@ public class BetPlaceDto implements Serializable {
    * Get marketStateId
    * @return marketStateId
    */
-  @NotNull
-  @Schema(name = "marketStateId", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Schema(name = "marketStateId", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("marketStateId")
   public Long getMarketStateId() {
     return marketStateId;

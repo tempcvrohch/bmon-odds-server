@@ -89,8 +89,7 @@ public class MatchUpsertDto implements Serializable {
    * Get name
    * @return name
    */
-  @NotNull
-  @Schema(name = "name", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Schema(name = "name", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("name")
   public String getName() {
     return name;
@@ -109,8 +108,7 @@ public class MatchUpsertDto implements Serializable {
    * Get live
    * @return live
    */
-  @NotNull
-  @Schema(name = "live", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Schema(name = "live", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("live")
   public Boolean getLive() {
     return live;
@@ -129,8 +127,7 @@ public class MatchUpsertDto implements Serializable {
    * Get league
    * @return league
    */
-  @NotNull
-  @Valid
+  @NotNull @Valid
   @Schema(name = "league", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("league")
   public LeagueDto getLeague() {
@@ -150,8 +147,7 @@ public class MatchUpsertDto implements Serializable {
    * Get sport
    * @return sport
    */
-  @NotNull
-  @Valid
+  @NotNull @Valid
   @Schema(name = "sport", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("sport")
   public SportDto getSport() {
@@ -179,8 +175,7 @@ public class MatchUpsertDto implements Serializable {
    * Get playerIds
    * @return playerIds
    */
-  @NotNull
-  @Schema(name = "playerIds", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Schema(name = "playerIds", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("playerIds")
   public List<Long> getPlayerIds() {
     return playerIds;
@@ -199,8 +194,7 @@ public class MatchUpsertDto implements Serializable {
    * Get matchState
    * @return matchState
    */
-  @NotNull
-  @Valid
+  @NotNull @Valid
   @Schema(name = "matchState", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("matchState")
   public MatchUpsertDtoMatchState getMatchState() {

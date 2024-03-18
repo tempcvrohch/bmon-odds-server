@@ -20,7 +20,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
       HttpServletRequest request, HttpServletResponse response, Authentication authentication)
       throws IOException {
     clearAuthenticationAttributes(request);
-    getRedirectStrategy().sendRedirect(request, response, "/api/auth/session");
+    getRedirectStrategy().sendRedirect(request, response, "/auth/session");
   }
 
   public void setRequestCache(RequestCache requestCache) {

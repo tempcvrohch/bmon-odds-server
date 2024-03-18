@@ -50,16 +50,16 @@ public class SecurityConfiguration {
     http.cors(Customizer.withDefaults())
         .csrf(
             (csrf) ->
-                csrf.ignoringRequestMatchers("/api/auth/**", "/api/match/**")
+                csrf.ignoringRequestMatchers("/auth/**", "/match/**")
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                     .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
         .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
         .authorizeHttpRequests(
             (authorize) ->
                 authorize
-                    .requestMatchers("/api/user/**", "/api/bet/**")
+                    .requestMatchers("/user/**", "/bet/**")
                     .authenticated()
-                    .requestMatchers("/api/**")
+                    .requestMatchers("/**")
                     .permitAll())
         .formLogin(
             (formLogin) ->
@@ -68,9 +68,9 @@ public class SecurityConfiguration {
                     .passwordParameter("password")
                     .loginPage("/login")
                     .failureUrl("/login?failed")
-                    .loginProcessingUrl("/api/auth/login")
+                    .loginProcessingUrl("/auth/login")
                     .successHandler(authSuccessHandler))
-        .logout((logout) -> logout.logoutUrl("/api/auth/logout"));
+        .logout((logout) -> logout.logoutUrl("/auth/logout"));
     // .formLogin(Customizer.withDefaults()).rememberMe(Customizer.withDefaults());
     return http.build();
   }

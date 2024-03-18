@@ -79,8 +79,8 @@ public interface AuthApi {
   /**
    * POST /auth/login : Logs the user in
    *
-   * @param username  (optional)
-   * @param password  (optional)
+   * @param username (optional)
+   * @param password (optional)
    * @return
    */
   @Operation(
@@ -126,7 +126,7 @@ public interface AuthApi {
   /**
    * POST /auth/register : register a new user.
    *
-   * @param userRegisterDto  (required)
+   * @param userRegisterDto (required)
    * @return a user is logged in and was returned. (status code 200)
    *         or the username/password has invalid length. (status code 400)
    *         or username was taken (status code 409)

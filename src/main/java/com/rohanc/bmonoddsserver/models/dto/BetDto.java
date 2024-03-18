@@ -62,8 +62,7 @@ public class BetDto implements Serializable {
    * Get id
    * @return id
    */
-  @NotNull
-  @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public Long getId() {
     return id;
@@ -123,8 +122,7 @@ public class BetDto implements Serializable {
    * minimum: 0
    * @return stake
    */
-  @NotNull
-  @Min(0)
+  @NotNull @Min(0)
   @Schema(name = "stake", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("stake")
   public Integer getStake() {
@@ -144,8 +142,7 @@ public class BetDto implements Serializable {
    * Get status
    * @return status
    */
-  @NotNull
-  @Valid
+  @NotNull @Valid
   @Schema(name = "status", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("status")
   public BetStatusDto getStatus() {

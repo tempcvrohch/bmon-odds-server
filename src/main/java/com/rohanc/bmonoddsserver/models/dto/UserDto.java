@@ -57,8 +57,7 @@ public class UserDto implements Serializable {
    * Get id
    * @return id
    */
-  @NotNull
-  @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Schema(name = "id", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("id")
   public Long getId() {
     return id;
@@ -117,8 +116,7 @@ public class UserDto implements Serializable {
    * Get username
    * @return username
    */
-  @NotNull
-  @Size(min = 6, max = 32)
+  @NotNull @Size(min = 6, max = 32)
   @Schema(name = "username", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("username")
   public String getUsername() {
